@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">gentlepad</string>
+    <string name="app_name">GentlePad</string>
     <string name="app_title">GentlePad</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
