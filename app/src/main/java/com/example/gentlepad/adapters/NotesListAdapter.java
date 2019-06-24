@@ -2,6 +2,7 @@ package com.example.gentlepad.adapters;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,11 @@ import java.util.ArrayList;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.SavedNotesViewHolder> {
 
-    DatabaseHelper db;
-    NoteItem item;
-    ArrayList<NoteItem> savedNotesList;
+    private ArrayList<NoteItem> savedNotesList;
+
+    public NotesListAdapter(ArrayList<NoteItem> mNotesList) {
+        this.savedNotesList = mNotesList;
+    }
 
     @Override
     public NotesListAdapter.SavedNotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -25,17 +28,18 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
                 .inflate(R.layout.item_notes, parent, false));
     }
 
+
     @Override
     public void onBindViewHolder(NotesListAdapter.SavedNotesViewHolder holder, int position) {
-        holder.tvNotesTitleItem.setText(getDataFromDb().get(position).getNotesTitle());
-        holder.tvNotesDesc.setText(getDataFromDb().get(position).getNotesDesc());
-        holder.tvNotesDate.setText(getDataFromDb().get(position).getDate());
+        holder.tvNotesTitleItem.setText(savedNotesList.get(position).getNotesTitle());
+        holder.tvNotesDesc.setText(savedNotesList.get(position).getNotesDesc());
+        holder.tvNotesDate.setText(savedNotesList.get(position).getDate());
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return savedNotesList.size();
     }
 
     class SavedNotesViewHolder extends RecyclerView.ViewHolder {
@@ -50,16 +54,6 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         }
     }
 
-    public ArrayList<NoteItem> getDataFromDb() {
-        Cursor res = db.getAllData();
-        if (res.getCount() == 0) {
-            return null;
-        }
-        while (res.moveToNext()) {
-            item = new NoteItem(res.getString(1), res.getString(2), res.getString(3));
-            savedNotesList.add(item);
-        }
-        return savedNotesList;
-    }
+
 
 }

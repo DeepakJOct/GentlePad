@@ -1,31 +1,23 @@
 package com.example.gentlepad.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.gentlepad.R;
-import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.models.NoteItem;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +35,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
     Button btnCancel, btnSave;
     DatabaseHelper databaseHelper;
     String nTitle, nDesc, nDate;
+    private boolean isDataInserted;
 
     public AddNewNoteFragment() {
         // Required empty public constructor
@@ -114,18 +107,28 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         } else if (view.getId() == (R.id.btn_save)) {
             if (validations()) {
                 saveNotes(getContext(), nTitle, nDesc, nDate);
+            }
+
+            if (isDataInserted) {
+
                 startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
             }
 
+
             /*After saving the details to database, show the items by fetching from the list into the
-            * recycler view
-            * */
+             * recycler view
+             * */
         }
     }
 
     private void saveNotes(Context context, String notesTitle, String notesDesc, String date) {
         NoteItem item = new NoteItem(notesTitle, notesDesc, date);
-        databaseHelper.insertData(context, item.getNotesTitle(), item.getNotesDesc(), item.getDate());
+        boolean isInserted = databaseHelper.insertData(context, item.getNotesTitle(), item.getNotesDesc(), item.getDate());
+        if (isInserted) {
+            isDataInserted = true;
+        } else {
+            isDataInserted = false;
+        }
         databaseHelper.close();
     }
 

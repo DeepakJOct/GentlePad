@@ -1,18 +1,26 @@
 package com.example.gentlepad.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.adapters.NotesListAdapter;
+import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.models.NoteItem;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +34,9 @@ public class NotesListFragment extends Fragment {
 
     RecyclerView rcvNotes;
     NotesListAdapter notesListAdapter;
+    NoteItem item;
+    ArrayList<NoteItem> savedNotesList = new ArrayList<>();
+    DatabaseHelper db;
 
 
     private OnNotesListFragmentInteractionListener mListener;
@@ -54,9 +65,12 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        savedNotesList = getDataFromDb();
         rcvNotes = view.findViewById(R.id.rcv_notes);
-        notesListAdapter = new NotesListAdapter();
+        notesListAdapter = new NotesListAdapter(savedNotesList);
         rcvNotes.setAdapter(notesListAdapter);
+        rcvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
+        mListener.OnNotesListFragmentInteractionListener();
     }
 
     @Override
@@ -74,6 +88,26 @@ public class NotesListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public ArrayList<NoteItem> getDataFromDb() {
+        db = new DatabaseHelper(getContext());
+        Cursor res = db.getAllData();
+        if (res.getCount() == 0) {
+            return null;
+        }
+        if (res.moveToFirst()) {
+            while (!res.isAfterLast()) {
+                item = new NoteItem(res.getString(res.getColumnIndex("NOTES_TITLE")),
+                        res.getString(res.getColumnIndex("NOTES_DESC")),
+                        res.getString(res.getColumnIndex("DATE")));
+                savedNotesList.add(item);
+                res.moveToNext();
+            }
+        }
+        Log.d("ArrayListFromDb--> ", " " + savedNotesList.get(0));
+        res.close();
+        return savedNotesList;
     }
 
     /**

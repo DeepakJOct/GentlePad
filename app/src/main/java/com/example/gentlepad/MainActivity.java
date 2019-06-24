@@ -1,38 +1,55 @@
 package com.example.gentlepad;
 
 import android.app.ActionBar;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.fragments.AddNewNoteFragment;
 import com.example.gentlepad.fragments.NotesListFragment;
+import com.example.gentlepad.models.NoteItem;
 import com.example.gentlepad.splash.SplashActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AddNewNoteFragment.OnFragmentInteractionListener,
         NotesListFragment.OnNotesListFragmentInteractionListener {
 
     //    android.support.v7.app.ActionBar actionBar;
     CardView cvAddNote;
+    DatabaseHelper db;
+    NoteItem item;
+    ArrayList<NoteItem> savedNotesList = new ArrayList<>();
+    TextView tvAddNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
 //        actionBar = getSupportActionBar();
 //        actionBar.setTitle(getString(R.string.app_title));
         cvAddNote = findViewById(R.id.cv_add_note);
+        tvAddNote = findViewById(R.id.tv_add_note);
+        if (getDataFromDb() != null) {
+            startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
+            tvAddNote.setText("Add new note");
+        }
         cvAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cvAddNote.setVisibility(View.GONE);
                 startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
+
             }
         });
 
@@ -71,6 +88,26 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     }
 
+    public ArrayList<NoteItem> getDataFromDb() {
+        db = new DatabaseHelper(this);
+        Cursor res = db.getAllData();
+        if (res.getCount() == 0) {
+            return null;
+        }
+        if (res.moveToFirst()) {
+            while (!res.isAfterLast()) {
+                item = new NoteItem(res.getString(res.getColumnIndex("NOTES_TITLE")),
+                        res.getString(res.getColumnIndex("NOTES_DESC")),
+                        res.getString(res.getColumnIndex("DATE")));
+                savedNotesList.add(item);
+                res.moveToNext();
+            }
+        }
+        Log.d("ArrayListFromDb--> ", " " + savedNotesList.get(0));
+        res.close();
+        return savedNotesList;
+    }
+
     @Override
     public void onFragmentInteraction() {
         cvAddNote.setVisibility(View.VISIBLE);
@@ -79,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     @Override
     public void OnNotesListFragmentInteractionListener() {
         cvAddNote.setVisibility(View.VISIBLE);
+        tvAddNote.setText("Add new note");
 
     }
 }

@@ -11,7 +11,7 @@ import com.example.gentlepad.common.CommonUtils;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Main.db";
-    public static final String TABLE_NAME = "saved_notes";
+        public static final String TABLE_NAME = "saved_notes";
     public static final String COL_1 = "ID";
     public static final String COL_2 = "NOTES_TITLE";
     public static final String COL_3 = "NOTES_DESC";
@@ -43,19 +43,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertData(Context context, String notesTitle, String notesDesc, String date) {
+    public boolean insertData(Context context, String notesTitle, String notesDesc, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2, notesTitle);
         contentValues.put(COL_3, notesDesc);
         contentValues.put(COL_4, date);
         long rowInserted = db.insert(TABLE_NAME, null, contentValues);
+        db.close();
         if(rowInserted != -1) {
             CommonUtils.showToastMessage(context, "Save successful");
+            return true;
         } else {
             CommonUtils.showToastMessage(context, "Something went wrong");
+            return false;
         }
-        db.close();
+
     }
 
     public Cursor getAllData() {
