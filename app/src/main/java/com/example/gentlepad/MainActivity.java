@@ -60,7 +60,11 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
         } else {
-            getSupportFragmentManager().popBackStack();
+            if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                finish();
+            }
         }
 
     }
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     @Override
     public void onFragmentInteraction() {
         cvAddNote.setVisibility(View.VISIBLE);
+        startNewFragment(NotesListFragment.newInstance(), "NoteListFragment", true);
     }
 
     @Override

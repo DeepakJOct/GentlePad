@@ -67,9 +67,13 @@ public class NotesListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         savedNotesList = getDataFromDb();
         rcvNotes = view.findViewById(R.id.rcv_notes);
-        notesListAdapter = new NotesListAdapter(savedNotesList);
+        notesListAdapter = new NotesListAdapter(savedNotesList, getContext());
         rcvNotes.setAdapter(notesListAdapter);
-        rcvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
+        Context context;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        rcvNotes.setLayoutManager(linearLayoutManager);
         mListener.OnNotesListFragmentInteractionListener();
     }
 
@@ -80,7 +84,7 @@ public class NotesListFragment extends Fragment {
             mListener = (OnNotesListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnViewNotesFragmentInteractionListener");
         }
     }
 

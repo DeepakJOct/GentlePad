@@ -88,7 +88,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnViewNotesFragmentInteractionListener");
         }
     }
 
@@ -101,23 +101,17 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         if (view.getId() == (R.id.btn_cancel)) {
-            CommonUtils.showToastMessage(getContext(), "Clicked");
-            getFragmentManager().beginTransaction().remove(this).commit();
+//            CommonUtils.showToastMessage(getContext(), "Clicked");
+//            getFragmentManager().beginTransaction().remove(this).commit();
+            getFragmentManager().popBackStack();
             mListener.onFragmentInteraction();
         } else if (view.getId() == (R.id.btn_save)) {
             if (validations()) {
                 saveNotes(getContext(), nTitle, nDesc, nDate);
             }
-
             if (isDataInserted) {
-
                 startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
             }
-
-
-            /*After saving the details to database, show the items by fetching from the list into the
-             * recycler view
-             * */
         }
     }
 

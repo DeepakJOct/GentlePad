@@ -67,4 +67,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getSelectedItemDetails(String notesTitle) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " WHERE " + COL_2 + " = " + notesTitle, null);
+        return res;
+    }
+
 }

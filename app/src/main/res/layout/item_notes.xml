@@ -60,6 +60,7 @@
                 android:padding="2dp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:textSize="13sp"
                 android:text="24 June 2019"/>
 
         </LinearLayout>
