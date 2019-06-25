@@ -2,6 +2,9 @@ package com.example.gentlepad.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.models.NoteItem;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
     @Override
     public NotesListAdapter.SavedNotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         return new SavedNotesViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_notes, parent, false));
     }
@@ -42,9 +47,15 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
     }
 
+
     @Override
     public int getItemCount() {
         return savedNotesList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     class SavedNotesViewHolder extends RecyclerView.ViewHolder {
@@ -60,8 +71,14 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
                 @Override
                 public void onClick(View view) {
                     item = getItemDataFromDb(tvNotesTitleItem.getText().toString());
-                    if(item != null) {
-
+                    if (item != null) {
+                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                        Fragment mFragment = ViewNotesFragment.newInstance(item);
+                        activity.getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, mFragment)
+                                .addToBackStack("ViewNotesFragment")
+                                .commit();
                     }
                 }
             });
@@ -89,6 +106,25 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         return item;
     }
 
+    /*void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
+        AppCompatActivity activity = (AppCompatActivity)
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        if (getActivity().getSupportFragmentManager().findFragmentById(R.id.container) != null) {
+            if (backstack) {
+                fragmentTransaction.replace(R.id.container, frag, tag);
+                fragmentTransaction.addToBackStack(null);
+            } else {
+                fragmentTransaction.replace(R.id.container, frag, tag);
+                fragmentTransaction.addToBackStack(tag);
+            }
+        } else {
+            fragmentTransaction.add(R.id.container, frag, tag);
+        }
+
+        fragmentTransaction.commitAllowingStateLoss();
+
+    }*/
 
 
 }

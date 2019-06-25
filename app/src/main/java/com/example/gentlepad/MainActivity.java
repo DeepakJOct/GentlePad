@@ -3,6 +3,8 @@ package com.example.gentlepad;
 import android.app.ActionBar;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,13 +17,15 @@ import android.widget.Toolbar;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.fragments.AddNewNoteFragment;
 import com.example.gentlepad.fragments.NotesListFragment;
+import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.models.NoteItem;
 import com.example.gentlepad.splash.SplashActivity;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AddNewNoteFragment.OnFragmentInteractionListener,
-        NotesListFragment.OnNotesListFragmentInteractionListener {
+        NotesListFragment.OnNotesListFragmentInteractionListener,
+        ViewNotesFragment.OnViewNotesFragmentInteractionListener {
 
     //    android.support.v7.app.ActionBar actionBar;
     CardView cvAddNote;
@@ -60,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
         } else {
-            if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
+            if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
+                getSupportFragmentManager().popBackStack();
+            } else if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof ViewNotesFragment) {
                 getSupportFragmentManager().popBackStack();
             } else {
                 finish();
@@ -122,6 +128,11 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     public void OnNotesListFragmentInteractionListener() {
         cvAddNote.setVisibility(View.VISIBLE);
         tvAddNote.setText("Add new note");
+    }
 
+
+    @Override
+    public void OnViewNotesFragmentInteractionListener() {
+        cvAddNote.setVisibility(View.GONE);
     }
 }

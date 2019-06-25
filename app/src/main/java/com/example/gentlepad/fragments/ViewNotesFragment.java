@@ -22,7 +22,7 @@ import com.example.gentlepad.models.NoteItem;
  * Use the {@link ViewNotesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewNotesFragment extends Fragment implements View.OnClickListener{
+public class ViewNotesFragment extends Fragment implements View.OnClickListener {
 
     private NoteItem noteItem;
     EditText etNotesTitle;
@@ -74,11 +74,11 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener{
         btnSave.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
 
-        if(noteItem != null) {
+        if (noteItem != null) {
             etNotesTitle.setText(noteItem.getNotesTitle());
             etNotesDesc.setText(noteItem.getNotesDesc());
         }
-
+        mListener.OnViewNotesFragmentInteractionListener();
         //First of all, the fragment only shows the details of the item.
         //Secondly, an option to edit the notes will appear... if user clicks on it,
         //EditTexts will be enabled and Save and Cancel button will be visible.
@@ -103,6 +103,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener{
         super.onDetach();
         mListener = null;
     }
+
 
     public void updateNotes() {
         //First of all, the fragment only shows the details of the item.
@@ -131,6 +132,6 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener{
      */
     public interface OnViewNotesFragmentInteractionListener {
 
-        void onFragmentInteraction();
+        void OnViewNotesFragmentInteractionListener();
     }
 }
