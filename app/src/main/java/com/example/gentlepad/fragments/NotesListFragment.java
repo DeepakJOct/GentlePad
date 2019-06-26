@@ -89,6 +89,13 @@ public class NotesListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        savedNotesList.clear();
+        savedNotesList = getDataFromDb();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;

@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     public void OnNotesListFragmentInteractionListener() {
         cvAddNote.setVisibility(View.VISIBLE);
         tvAddNote.setText("Add new note");
+
     }
 
 
