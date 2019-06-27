@@ -10,12 +10,17 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.example.gentlepad.R;
+import com.example.gentlepad.common.CommonUtils;
+import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.models.NoteItem;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,9 +37,12 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     EditText etNotesDesc;
     Button btnCancel, btnSave, btnBack, btnEdit;
     RelativeLayout rlEditButtons;
+    DatabaseHelper db;
 
     private OnViewNotesFragmentInteractionListener mListener;
     private RelativeLayout rlSaveButtons;
+    private String oldNotesTitle;
+    private String[] noteItemsArray;
 
     public ViewNotesFragment() {
         // Required empty public constructor
@@ -72,6 +80,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        db = new DatabaseHelper(getContext());
         etNotesTitle = view.findViewById(R.id.et_notes_title);
         etNotesDesc = view.findViewById(R.id.et_notes_desc);
         btnSave = view.findViewById(R.id.btn_save);
@@ -86,6 +95,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         btnEdit.setOnClickListener(this);
 
         if (noteItem != null) {
+            //Getting and saving notes title for selection in database.
+            oldNotesTitle = noteItem.getNotesTitle();
             etNotesTitle.setText(noteItem.getNotesTitle());
             etNotesDesc.setText(noteItem.getNotesDesc());
         }
@@ -93,6 +104,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         etNotesDesc.setEnabled(false);
         rlSaveButtons.setVisibility(View.GONE);
         rlEditButtons.setVisibility(View.VISIBLE);
+        getEditedNotes();
 
 
         mListener.OnViewNotesFragmentInteractionListener();
@@ -101,7 +113,6 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         //EditTexts will be enabled and Save and Cancel button will be visible.
         //on again click on save button, the current item details will get updated
         //with edited text and edited date will also be updated.
-
 
     }
 
@@ -123,6 +134,50 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     }
 
 
+    public void getEditedNotes() {
+        noteItemsArray = new String[3];
+        etNotesTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence editedNotesTitle, int start, int before, int count) {
+//                editedNotesItem.setNotesTitle(newNotesTitle.toString());
+                String newNotesTitle = etNotesTitle.getText().toString();
+                noteItemsArray[0] = newNotesTitle;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        etNotesDesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence editedNotesDesc, int start, int before, int count) {
+//                editedNotesItem.setNotesDesc(newNotesDesc.toString());
+                String newNotesDesc = etNotesDesc.getText().toString();
+                noteItemsArray[1] = newNotesDesc;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+//        editedNotesItem = new NoteItem(newNotesTitle, newNotesDesc, newDate);
+        noteItemsArray[2] = CommonUtils.getDate();
+    }
+
     public void updateNotes() {
         //First of all, the fragment only shows the details of the item.
         //Secondly, an option to edit the notes will appear... if user clicks on it,
@@ -131,16 +186,33 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         //with edited text and edited date will also be updated.
 
 
+        /*boolean isInserted = db.updateNotes(getContext(), noteItemsArray, oldNotesTitle);
+        if (isInserted) {
+            return true;
+        } else {
+            return false;
+        }*/
+
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.btn_cancel) {
+        if (view.getId() == R.id.btn_cancel) {
             getActivity().onBackPressed();
-        } else if(view.getId() == R.id.btn_save){
+        } else if (view.getId() == R.id.btn_save) {
             //get edit text data and update the database here,
             // then go back by using getActivity().onBackPressed();
-        } else if(view.getId() == R.id.btn_edit) {
+            /*if (updateNotes()) {
+                CommonUtils.showToastMessage(getContext(), "Successfully updated");
+                getActivity().onBackPressed();
+            } else {
+                CommonUtils.showToastMessage(getContext(), "Something went wrong!");
+            }*/
+            db.updateNotes(getContext(), noteItemsArray, oldNotesTitle);
+            CommonUtils.showToastMessage(getContext(), "noteItemsArray--> " + noteItemsArray[0] + "\n" + noteItemsArray[1]);
+
+
+        } else if (view.getId() == R.id.btn_edit) {
             rlEditButtons.setVisibility(View.GONE);
             rlSaveButtons.setVisibility(View.VISIBLE);
             etNotesTitle.setEnabled(true);
@@ -149,7 +221,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
             etNotesDesc.setCursorVisible(true);
             btnCancel.setText("Back");
             etNotesTitle.setFocusable(true);
-        } else if(view.getId() == R.id.btn_back) {
+            InputMethodManager imeManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+            imeManager.showInputMethodPicker();
+        } else if (view.getId() == R.id.btn_back) {
             getActivity().onBackPressed();
         }
     }

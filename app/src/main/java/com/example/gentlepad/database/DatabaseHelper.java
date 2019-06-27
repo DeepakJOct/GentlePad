@@ -5,13 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.gentlepad.common.CommonUtils;
+import com.example.gentlepad.models.NoteItem;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Main.db";
-        public static final String TABLE_NAME = "saved_notes";
+    public static final String TABLE_NAME = "saved_notes";
     public static final String COL_1 = "ID";
     public static final String COL_2 = "NOTES_TITLE";
     public static final String COL_3 = "NOTES_DESC";
@@ -51,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_4, date);
         long rowInserted = db.insert(TABLE_NAME, null, contentValues);
         db.close();
-        if(rowInserted != -1) {
+        if (rowInserted != -1) {
             CommonUtils.showToastMessage(context, "Save successful");
             return true;
         } else {
@@ -72,11 +75,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.query
                 (
                         TABLE_NAME,
-                        new String[] { COL_2, COL_3, COL_4},
-                        COL_2  + "=?",
+                        new String[]{COL_2, COL_3, COL_4},
+                        COL_2 + "=?",
                         new String[]{notesTitle}, null, null, null, null
                 );
         return res;
+    }
+
+    public void updateNotes(Context context, String[] noteItems, String oldNotesTitle) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (noteItems == null) {
+            CommonUtils.showToastMessage(context, "Save failed");
+            return;
+        }
+        ContentValues cv = new ContentValues();
+        cv.put(COL_2, noteItems[0]);
+        cv.put(COL_3, noteItems[1]);
+        cv.put(COL_4, noteItems[2]);
+        CommonUtils.showToastMessage(context, "Items--> " + noteItems[0] + "\n" + noteItems[1]);
+        long result = db.update(TABLE_NAME, cv, COL_2 + "=?", new String[]{oldNotesTitle});
+        db.close();
+        if (result > 0) {
+            CommonUtils.showToastMessage(context, "Save successful-->" + result);
+            CommonUtils.showToastMessage(context, "Items--> " + noteItems[0] + "\n" + noteItems[1] + oldNotesTitle );
+        } else {
+            CommonUtils.showToastMessage(context, "Something went wrong-->" + result);
+        }
     }
 
 }
