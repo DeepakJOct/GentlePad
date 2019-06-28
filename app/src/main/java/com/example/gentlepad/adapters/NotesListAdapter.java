@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,9 +42,18 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
     @Override
     public void onBindViewHolder(NotesListAdapter.SavedNotesViewHolder holder, int position) {
-        holder.tvNotesTitleItem.setText(savedNotesList.get(position).getNotesTitle());
-        holder.tvNotesDesc.setText(savedNotesList.get(position).getNotesDesc());
-        holder.tvNotesDate.setText(savedNotesList.get(position).getDate());
+        if (savedNotesList != null) {
+            holder.tvNotesTitleItem.setText(savedNotesList.get(position).getNotesTitle());
+            holder.tvNotesDesc.setText(savedNotesList.get(position).getNotesDesc());
+            holder.tvNotesDate.setText(savedNotesList.get(position).getDate());
+        }
+        //Put default text in views if data is not there
+        if(TextUtils.isEmpty(savedNotesList.get(position).getNotesTitle())) {
+            holder.tvNotesTitleItem.setText("No Title");
+        }
+        if(TextUtils.isEmpty(savedNotesList.get(position).getNotesDesc())){
+            holder.tvNotesDesc.setText("No Description");
+        }
 
     }
 
@@ -74,9 +84,17 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
                     if (item != null) {
                         AppCompatActivity activity = (AppCompatActivity) view.getContext();
                         Fragment mFragment = ViewNotesFragment.newInstance(item);
-                        activity.getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.container, mFragment)
+                        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+                        transaction.replace(R.id.container, mFragment)
+                                .addToBackStack("ViewNotesFragment")
+                                .commit();
+                    } else {
+                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                        Fragment mFragment = ViewNotesFragment.newInstance(item);
+                        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+                        transaction.replace(R.id.container, mFragment)
                                 .addToBackStack("ViewNotesFragment")
                                 .commit();
                     }

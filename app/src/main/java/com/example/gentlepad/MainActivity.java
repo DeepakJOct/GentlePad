@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
         final FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()
                 .beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         if (this.getSupportFragmentManager().findFragmentById(R.id.container) != null) {
             if (backstack) {
                 fragmentTransaction.replace(R.id.container, frag, tag);

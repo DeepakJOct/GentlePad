@@ -148,6 +148,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
     void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
         final FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
                 .beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         if (getActivity().getSupportFragmentManager().findFragmentById(R.id.container) != null) {
             if (backstack) {
                 fragmentTransaction.replace(R.id.container, frag, tag);

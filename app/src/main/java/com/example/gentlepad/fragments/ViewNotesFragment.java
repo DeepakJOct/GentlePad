@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
     private OnViewNotesFragmentInteractionListener mListener;
     private RelativeLayout rlSaveButtons;
-    private String oldNotesTitle;
+    private String oldNotesTitle, oldNotesDesc, newNotesTitle, newNotesDesc;
+    private boolean isTitleChanged, isDescChanged;
     private String[] noteItemsArray;
 
     public ViewNotesFragment() {
@@ -97,6 +99,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         if (noteItem != null) {
             //Getting and saving notes title for selection in database.
             oldNotesTitle = noteItem.getNotesTitle();
+            oldNotesDesc = noteItem.getNotesDesc();
             etNotesTitle.setText(noteItem.getNotesTitle());
             etNotesDesc.setText(noteItem.getNotesDesc());
         }
@@ -104,6 +107,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         etNotesDesc.setEnabled(false);
         rlSaveButtons.setVisibility(View.GONE);
         rlEditButtons.setVisibility(View.VISIBLE);
+        //Get changed notes and save
         getEditedNotes();
 
 
@@ -144,9 +148,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onTextChanged(CharSequence editedNotesTitle, int start, int before, int count) {
-//                editedNotesItem.setNotesTitle(newNotesTitle.toString());
-                String newNotesTitle = etNotesTitle.getText().toString();
-                noteItemsArray[0] = newNotesTitle;
+                    newNotesTitle = etNotesTitle.getText().toString();
+                    noteItemsArray[0] = newNotesTitle;
+                    isTitleChanged = true;
             }
 
             @Override
@@ -163,9 +167,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onTextChanged(CharSequence editedNotesDesc, int start, int before, int count) {
-//                editedNotesItem.setNotesDesc(newNotesDesc.toString());
-                String newNotesDesc = etNotesDesc.getText().toString();
-                noteItemsArray[1] = newNotesDesc;
+                    newNotesDesc = etNotesDesc.getText().toString();
+                    noteItemsArray[1] = newNotesDesc;
+                    isDescChanged = true;
             }
 
             @Override
@@ -174,8 +178,17 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
             }
         });
 
-//        editedNotesItem = new NoteItem(newNotesTitle, newNotesDesc, newDate);
-        noteItemsArray[2] = CommonUtils.getDate();
+
+        if(!isTitleChanged) {
+            noteItemsArray[0] = oldNotesTitle;
+        }
+        if(!isDescChanged) {
+            noteItemsArray[1] = oldNotesDesc;
+        }
+
+        if (!TextUtils.isEmpty(CommonUtils.getDate())) {
+            noteItemsArray[2] = CommonUtils.getDate();
+        }
     }
 
     public void updateNotes() {
@@ -200,17 +213,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         if (view.getId() == R.id.btn_cancel) {
             getActivity().onBackPressed();
         } else if (view.getId() == R.id.btn_save) {
-            //get edit text data and update the database here,
-            // then go back by using getActivity().onBackPressed();
-            /*if (updateNotes()) {
-                CommonUtils.showToastMessage(getContext(), "Successfully updated");
-                getActivity().onBackPressed();
-            } else {
-                CommonUtils.showToastMessage(getContext(), "Something went wrong!");
-            }*/
+
             db.updateNotes(getContext(), noteItemsArray, oldNotesTitle);
             CommonUtils.showToastMessage(getContext(), "noteItemsArray--> " + noteItemsArray[0] + "\n" + noteItemsArray[1]);
-
 
         } else if (view.getId() == R.id.btn_edit) {
             rlEditButtons.setVisibility(View.GONE);
@@ -221,8 +226,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
             etNotesDesc.setCursorVisible(true);
             btnCancel.setText("Back");
             etNotesTitle.setFocusable(true);
-            InputMethodManager imeManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
-            imeManager.showInputMethodPicker();
+            etNotesTitle.requestFocus();
+            /*InputMethodManager imeManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+            imeManager.showInputMethodPicker();*/
         } else if (view.getId() == R.id.btn_back) {
             getActivity().onBackPressed();
         }

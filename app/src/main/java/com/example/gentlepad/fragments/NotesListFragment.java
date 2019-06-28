@@ -94,12 +94,6 @@ public class NotesListFragment extends Fragment {
         super.onResume();
         savedNotesList.clear();
         savedNotesList = getDataFromDb();
-        CommonUtils.showToastMessage(getContext(), "NotesList--> " +
-                savedNotesList.get(0).getNotesTitle() + ", " + savedNotesList.get(0).getNotesDesc() + "\n" +
-                savedNotesList.get(1).getNotesTitle() + ", " + savedNotesList.get(1).getNotesDesc() + "\n" +
-                savedNotesList.get(2).getNotesTitle() + ", " + savedNotesList.get(2).getNotesDesc() + "\n" +
-                savedNotesList.get(3).getNotesTitle() + ", " + savedNotesList.get(3).getNotesDesc() + "\n");
-
         rcvNotes.setAdapter(new NotesListAdapter(savedNotesList, getContext()));
         rcvNotes.invalidate();
     }
