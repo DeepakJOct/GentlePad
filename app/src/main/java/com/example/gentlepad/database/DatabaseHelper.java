@@ -55,10 +55,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long rowInserted = db.insert(TABLE_NAME, null, contentValues);
         db.close();
         if (rowInserted != -1) {
-            CommonUtils.showToastMessage(context, "Save successful");
+            CommonUtils.showToastMessage(context, "Saved");
             return true;
         } else {
-            CommonUtils.showToastMessage(context, "Something went wrong");
+            CommonUtils.showToastMessage(context, "Error");
             return false;
         }
 
@@ -96,11 +96,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.update(TABLE_NAME, cv, COL_2 + "=?", new String[]{oldNotesTitle});
         db.close();
         if (result > 0) {
-            CommonUtils.showToastMessage(context, "Save successful-->" + result);
-            CommonUtils.showToastMessage(context, "Items--> " + noteItems[0] + "\n" + noteItems[1] + oldNotesTitle );
+            /*CommonUtils.showToastMessage(context, "Save successful-->" + result);
+            CommonUtils.showToastMessage(context, "Items--> " + noteItems[0] + "\n" + noteItems[1] + oldNotesTitle );*/
         } else {
-            CommonUtils.showToastMessage(context, "Something went wrong-->" + result);
+//            CommonUtils.showToastMessage(context, "Something went wrong-->" + result);
         }
+    }
+
+    public boolean deleteNotes(String noteTitle) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, COL_2 + "=?", new String[]{noteTitle}) > 0;
     }
 
 }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.gentlepad.R;
@@ -41,7 +42,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     DatabaseHelper db;
 
     private OnViewNotesFragmentInteractionListener mListener;
-    private RelativeLayout rlSaveButtons;
+    private LinearLayout llSaveButtons, llEditButtons;
     private String oldNotesTitle, oldNotesDesc, newNotesTitle, newNotesDesc;
     private boolean isTitleChanged, isDescChanged;
     private String[] noteItemsArray;
@@ -89,8 +90,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnBack = view.findViewById(R.id.btn_back);
         btnEdit = view.findViewById(R.id.btn_edit);
-        rlEditButtons = view.findViewById(R.id.rl_edit_buttons);
-        rlSaveButtons = view.findViewById(R.id.rl_save_buttons);
+        llEditButtons = view.findViewById(R.id.ll_edit_buttons);
+        llSaveButtons = view.findViewById(R.id.ll_save_buttons);
         btnSave.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnBack.setOnClickListener(this);
@@ -105,8 +106,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         }
         etNotesTitle.setEnabled(false);
         etNotesDesc.setEnabled(false);
-        rlSaveButtons.setVisibility(View.GONE);
-        rlEditButtons.setVisibility(View.VISIBLE);
+        llSaveButtons.setVisibility(View.GONE);
+        llEditButtons.setVisibility(View.VISIBLE);
         //Get changed notes and save
         getEditedNotes();
 
@@ -148,9 +149,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onTextChanged(CharSequence editedNotesTitle, int start, int before, int count) {
-                    newNotesTitle = etNotesTitle.getText().toString();
-                    noteItemsArray[0] = newNotesTitle;
-                    isTitleChanged = true;
+                newNotesTitle = etNotesTitle.getText().toString();
+                noteItemsArray[0] = newNotesTitle;
+                isTitleChanged = true;
             }
 
             @Override
@@ -167,9 +168,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onTextChanged(CharSequence editedNotesDesc, int start, int before, int count) {
-                    newNotesDesc = etNotesDesc.getText().toString();
-                    noteItemsArray[1] = newNotesDesc;
-                    isDescChanged = true;
+                newNotesDesc = etNotesDesc.getText().toString();
+                noteItemsArray[1] = newNotesDesc;
+                isDescChanged = true;
             }
 
             @Override
@@ -179,10 +180,10 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         });
 
 
-        if(!isTitleChanged) {
+        if (!isTitleChanged) {
             noteItemsArray[0] = oldNotesTitle;
         }
-        if(!isDescChanged) {
+        if (!isDescChanged) {
             noteItemsArray[1] = oldNotesDesc;
         }
 
@@ -191,35 +192,17 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    public void updateNotes() {
-        //First of all, the fragment only shows the details of the item.
-        //Secondly, an option to edit the notes will appear... if user clicks on it,
-        //EditTexts will be enabled and Save and Cancel button will be visible.
-        //on again click on save button, the current item details will get updated
-        //with edited text and edited date will also be updated.
-
-
-        /*boolean isInserted = db.updateNotes(getContext(), noteItemsArray, oldNotesTitle);
-        if (isInserted) {
-            return true;
-        } else {
-            return false;
-        }*/
-
-    }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_cancel) {
             getActivity().onBackPressed();
         } else if (view.getId() == R.id.btn_save) {
-
             db.updateNotes(getContext(), noteItemsArray, oldNotesTitle);
-            CommonUtils.showToastMessage(getContext(), "noteItemsArray--> " + noteItemsArray[0] + "\n" + noteItemsArray[1]);
-
+//            CommonUtils.showToastMessage(getContext(), "noteItemsArray--> " + noteItemsArray[0] + "\n" + noteItemsArray[1]);
+            getActivity().onBackPressed();
         } else if (view.getId() == R.id.btn_edit) {
-            rlEditButtons.setVisibility(View.GONE);
-            rlSaveButtons.setVisibility(View.VISIBLE);
+            llEditButtons.setVisibility(View.GONE);
+            llSaveButtons.setVisibility(View.VISIBLE);
             etNotesTitle.setEnabled(true);
             etNotesTitle.setCursorVisible(true);
             etNotesDesc.setEnabled(true);

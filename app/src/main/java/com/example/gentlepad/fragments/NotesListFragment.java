@@ -2,8 +2,6 @@ package com.example.gentlepad.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,10 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.adapters.NotesListAdapter;
-import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.models.NoteItem;
 
@@ -68,13 +67,16 @@ public class NotesListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         savedNotesList = getDataFromDb();
         rcvNotes = view.findViewById(R.id.rcv_notes);
-        notesListAdapter = new NotesListAdapter(savedNotesList, getContext());
-        rcvNotes.setAdapter(notesListAdapter);
-        Context context;
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        rcvNotes.setLayoutManager(linearLayoutManager);
+        if (savedNotesList != null) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            linearLayoutManager.setReverseLayout(true);
+            linearLayoutManager.setStackFromEnd(true);
+            rcvNotes.setLayoutManager(linearLayoutManager);
+            notesListAdapter = new NotesListAdapter(savedNotesList, getContext());
+            rcvNotes.setAdapter(notesListAdapter);
+        } else {
+            getActivity().onBackPressed();
+        }
         mListener.OnNotesListFragmentInteractionListener();
     }
 
@@ -92,10 +94,19 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        savedNotesList.clear();
-        savedNotesList = getDataFromDb();
-        rcvNotes.setAdapter(new NotesListAdapter(savedNotesList, getContext()));
-        rcvNotes.invalidate();
+        if (savedNotesList != null) {
+            savedNotesList.clear();
+            savedNotesList = getDataFromDb();
+            rcvNotes.setAdapter(new NotesListAdapter(savedNotesList, getContext()));
+            rcvNotes.invalidate();
+        } else {
+            getActivity().onBackPressed();
+            if (savedNotesList == null) {
+                getActivity().getWindow().findViewById(R.id.rl_no_notes).setVisibility(View.VISIBLE);
+                TextView tvNoNotes = getActivity().getWindow().findViewById(R.id.tv_no_notes);
+                tvNoNotes.setText("Saved notes list is empty");
+            }
+        }
     }
 
     @Override

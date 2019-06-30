@@ -7,18 +7,28 @@
 
     <ImageView
         android:id="@+id/logo_id"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_200sdp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_splash_gentlepad"/>
+        android:src="@drawable/ic_gentlepad_splash"/>
 
     <TextView
+        android:id="@+id/tv_app_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo_id"
         android:layout_centerHorizontal="true"
-        android:text="GentleNote"
-        android:textSize="30dp"
-        android:textColor="@color/title_blue"/>
+        android:text="GentlePad"
+        android:textSize="@dimen/_25sdp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_app_title"
+        android:textColor="@color/text_color"
+        android:text="A simple note taking app"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

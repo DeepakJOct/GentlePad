@@ -1,6 +1,8 @@
 package com.example.gentlepad.common;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +31,11 @@ public class CommonUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String formattedDate = sdf.format(date);
         return formattedDate;
+    }
+
+    public static void setFont(Context context, TextView textView) {
+        Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Satisfy-Regular.ttf");
+        textView.setTypeface(font);
     }
 
 }

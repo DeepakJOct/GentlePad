@@ -4,4 +4,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_title">Enter title</string>
+    <string name="enter_notes_description">Enter notes description</string>
+    <string name="btn_text_cancel">Cancel</string>
+    <string name="btn_text_save">Save</string>
+    <string name="btn_text_back">Back</string>
+    <string name="btn_text_edit">Edit</string>
+    <string name="notes_title">Notes Title</string>
+    <string name="dummy_date">24 June 2019</string>
+    <string name="add_new_notes">Add new note</string>
 </resources>

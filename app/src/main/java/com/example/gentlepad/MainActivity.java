@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     NoteItem item;
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
     TextView tvAddNote;
+    RelativeLayout rlNoNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,12 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 //        actionBar.setTitle(getString(R.string.app_title));
         cvAddNote = findViewById(R.id.cv_add_note);
         tvAddNote = findViewById(R.id.tv_add_note);
+        rlNoNotes = findViewById(R.id.rl_no_notes);
         if (getDataFromDb() != null) {
             startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
-            tvAddNote.setText("Add new note");
+            tvAddNote.setText(R.string.add_new_notes);
+        } else {
+            rlNoNotes.setVisibility(View.VISIBLE);
         }
         cvAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +74,13 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
             } else if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof ViewNotesFragment) {
                 getSupportFragmentManager().popBackStack();
             } else {
-                finish();
+                if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
+                    if (savedNotesList == null) {
+                        getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
+                    }
+                } else {
+                    finish();
+                }
             }
         }
 
@@ -129,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     public void OnNotesListFragmentInteractionListener() {
         cvAddNote.setVisibility(View.VISIBLE);
         tvAddNote.setText("Add new note");
+        if(savedNotesList != null) {
+            this.findViewById(R.id.rl_no_notes).setVisibility(View.GONE);
+        }
     }
 
 
