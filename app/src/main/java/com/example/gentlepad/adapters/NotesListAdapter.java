@@ -22,6 +22,7 @@ import com.example.gentlepad.dialogs.YesOrNoDialogFragment;
 import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.listeners.DeleteItemListener;
 import com.example.gentlepad.listeners.OnClickResultListener;
+import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
 import java.util.ArrayList;
@@ -34,11 +35,21 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     private NoteItem item;
     boolean isDeleted = false;
     private String pendingDeleteItem;
+    private OnResultListener onResultListener;
 
-    public NotesListAdapter(ArrayList<NoteItem> mNotesList, Context context) {
-        this.savedNotesList = mNotesList;
+    public NotesListAdapter(Context context) {
         this.context = context;
     }
+
+    public void setList(ArrayList<NoteItem> mNotesList) {
+        this.savedNotesList = mNotesList;
+
+    }
+
+    public void resultListenOnDelete(OnResultListener onResultListener) {
+        this.onResultListener = onResultListener;
+    }
+
 
     @Override
     public NotesListAdapter.SavedNotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,16 +73,18 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
                 public void onClick(View v) {
                     pendingDeleteItem = savedNotesList.get(position).getNotesTitle();
                     if (pendingDeleteItem != null) {
-                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                        final AppCompatActivity activity = (AppCompatActivity) v.getContext();
                         FragmentManager fm = activity.getSupportFragmentManager();
                         YesOrNoDialogFragment.newInstance("Delete Note", "Action cannot be undone. Do you want to delete?", new DeleteItemListener() {
                             @Override
                             public void onSuccess(boolean isDelete) {
+
                                 deleteItem(position);
                                 notifyItemRemoved(position);
                                 isDeleted = db.deleteNotes(pendingDeleteItem);
                                 if (isDeleted) {
                                     CommonUtils.showToastMessage(context, "Deleted");
+                                    onResultListener.getResult(isDeleted, true);
                                 } else {
                                     CommonUtils.showToastMessage(context, "Error");
                                 }
@@ -88,8 +101,6 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         if (TextUtils.isEmpty(savedNotesList.get(position).getNotesDesc())) {
             holder.tvNotesDesc.setText("No Description");
         }
-
-//        onClickResultListener.getResultOnCLick(isDeleted, true);
 
 
     }

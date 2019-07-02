@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                 if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
                     if (savedNotesList == null) {
                         getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
+                        rlNoNotes.setVisibility(View.VISIBLE);
                     }
                 } else {
                     finish();

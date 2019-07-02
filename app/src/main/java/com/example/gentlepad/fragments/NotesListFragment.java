@@ -17,7 +17,11 @@ import android.widget.TextView;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.adapters.NotesListAdapter;
+import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.listeners.DeleteItemListener;
+import com.example.gentlepad.listeners.OnClickResultListener;
+import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ public class NotesListFragment extends Fragment {
     NoteItem item;
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
     DatabaseHelper db;
+    RelativeLayout rlNoNotes;
 
 
     private OnNotesListFragmentInteractionListener mListener;
@@ -67,17 +72,33 @@ public class NotesListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         savedNotesList = getDataFromDb();
         rcvNotes = view.findViewById(R.id.rcv_notes);
-        if (savedNotesList != null) {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-            linearLayoutManager.setReverseLayout(true);
-            linearLayoutManager.setStackFromEnd(true);
-            rcvNotes.setLayoutManager(linearLayoutManager);
-            notesListAdapter = new NotesListAdapter(savedNotesList, getContext());
-            rcvNotes.setAdapter(notesListAdapter);
-        } else {
-            getActivity().onBackPressed();
-        }
+        rlNoNotes = view.findViewById(R.id.rl_no_notes);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        rcvNotes.setLayoutManager(linearLayoutManager);
+        notesListAdapter = new NotesListAdapter(getContext());
+
+        notesListAdapter.resultListenOnDelete(new OnResultListener() {
+            @Override
+            public void getResult(Object object, boolean isSuccess) {
+                Log.d("onResultListen", "onResult" + object);
+            }
+        });
+
         mListener.OnNotesListFragmentInteractionListener();
+
+
+    }
+
+    private void setDataToAdapter() {
+
+        if (savedNotesList != null) {
+            notesListAdapter.setList(savedNotesList);
+            rcvNotes.setAdapter(notesListAdapter);
+
+        }
     }
 
     @Override
@@ -94,11 +115,13 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        /*
+         * to refresh the list whenever a new item is added in the db
+         * */
         if (savedNotesList != null) {
             savedNotesList.clear();
             savedNotesList = getDataFromDb();
-            rcvNotes.setAdapter(new NotesListAdapter(savedNotesList, getContext()));
-            rcvNotes.invalidate();
+            setDataToAdapter();
         } else {
             getActivity().onBackPressed();
             if (savedNotesList == null) {
