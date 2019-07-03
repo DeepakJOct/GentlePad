@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -37,7 +39,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     private NoteItem noteItem;
     EditText etNotesTitle;
     EditText etNotesDesc;
-    Button btnCancel, btnSave, btnBack, btnEdit;
+    ImageButton btnCancel, btnSave, btnBack, btnEdit;
     RelativeLayout rlEditButtons;
     DatabaseHelper db;
 
@@ -201,13 +203,14 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 //            CommonUtils.showToastMessage(getContext(), "noteItemsArray--> " + noteItemsArray[0] + "\n" + noteItemsArray[1]);
             getActivity().onBackPressed();
         } else if (view.getId() == R.id.btn_edit) {
+            getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.INVISIBLE);
             llEditButtons.setVisibility(View.GONE);
             llSaveButtons.setVisibility(View.VISIBLE);
             etNotesTitle.setEnabled(true);
             etNotesTitle.setCursorVisible(true);
             etNotesDesc.setEnabled(true);
             etNotesDesc.setCursorVisible(true);
-            btnCancel.setText("Back");
+            btnCancel.setImageResource(R.drawable.ic_back);
             etNotesTitle.setFocusable(true);
             etNotesTitle.requestFocus();
             /*InputMethodManager imeManager = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);

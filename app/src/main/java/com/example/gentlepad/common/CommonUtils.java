@@ -27,7 +27,7 @@ public class CommonUtils {
 
     public static String getDate() {
         Date date = Calendar.getInstance().getTime();
-        String pattern = "dd MMM yyyy";
+        String pattern = "dd MMM yyyy hh:mm a";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String formattedDate = sdf.format(date);
         return formattedDate;

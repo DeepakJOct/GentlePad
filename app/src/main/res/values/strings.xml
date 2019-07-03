@@ -11,6 +11,6 @@
     <string name="btn_text_back">Back</string>
     <string name="btn_text_edit">Edit</string>
     <string name="notes_title">Notes Title</string>
-    <string name="dummy_date">24 June 2019</string>
+    <string name="dummy_date">24 June 2019 09:49 PM</string>
     <string name="add_new_notes">Add new note</string>
 </resources>

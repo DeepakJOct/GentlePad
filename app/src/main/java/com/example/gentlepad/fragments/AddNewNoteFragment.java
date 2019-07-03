@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.common.CommonUtils;
@@ -32,7 +33,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
     private OnFragmentInteractionListener mListener;
     EditText etNotesTitle;
     EditText etNotesDesc;
-    Button btnCancel, btnSave;
+    ImageButton btnCancel, btnSave;
     DatabaseHelper databaseHelper;
     String nTitle, nDesc, nDate;
     private boolean isDataInserted;
@@ -77,7 +78,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
             nDesc = etNotesDesc.getText().toString();
         }
         nDate = CommonUtils.getDate();
-
+        getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.INVISIBLE);
     }
 
 

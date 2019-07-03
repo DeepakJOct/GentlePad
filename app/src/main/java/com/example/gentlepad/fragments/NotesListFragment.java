@@ -87,6 +87,8 @@ public class NotesListFragment extends Fragment {
             }
         });
 
+        getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.VISIBLE);
+
         mListener.OnNotesListFragmentInteractionListener();
 
 
@@ -127,7 +129,6 @@ public class NotesListFragment extends Fragment {
             if (savedNotesList == null) {
                 getActivity().getWindow().findViewById(R.id.rl_no_notes).setVisibility(View.VISIBLE);
                 TextView tvNoNotes = getActivity().getWindow().findViewById(R.id.tv_no_notes);
-                tvNoNotes.setText("Saved notes list is empty");
             }
         }
     }

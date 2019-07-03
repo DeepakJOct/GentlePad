@@ -1,8 +1,10 @@
 package com.example.gentlepad;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -29,38 +31,35 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         ViewNotesFragment.OnViewNotesFragmentInteractionListener {
 
     //    android.support.v7.app.ActionBar actionBar;
-    CardView cvAddNote;
     DatabaseHelper db;
     NoteItem item;
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
-    TextView tvAddNote;
     RelativeLayout rlNoNotes;
+    FloatingActionButton fabAddNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-//        actionBar = getSupportActionBar();
-//        actionBar.setTitle(getString(R.string.app_title));
-        cvAddNote = findViewById(R.id.cv_add_note);
-        tvAddNote = findViewById(R.id.tv_add_note);
         rlNoNotes = findViewById(R.id.rl_no_notes);
+        fabAddNew = findViewById(R.id.fab);
         if (getDataFromDb() != null) {
             startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
-            tvAddNote.setText(R.string.add_new_notes);
         } else {
             rlNoNotes.setVisibility(View.VISIBLE);
         }
-        cvAddNote.setOnClickListener(new View.OnClickListener() {
+        fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cvAddNote.setVisibility(View.GONE);
                 startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
-
             }
         });
+
+        if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
+            fabAddNew.setVisibility(View.INVISIBLE);
+        } else {
+            fabAddNew.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -76,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
             } else {
                 if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
                     if (savedNotesList == null) {
-                        getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
+                        //changed here
+                        getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag("NoteListFragment")).commit();
                         rlNoNotes.setVisibility(View.VISIBLE);
                     }
                 } else {
@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     public ArrayList<NoteItem> getDataFromDb() {
@@ -133,14 +132,12 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     @Override
     public void onFragmentInteraction() {
-        cvAddNote.setVisibility(View.VISIBLE);
         startNewFragment(NotesListFragment.newInstance(), "NoteListFragment", true);
+
     }
 
     @Override
     public void OnNotesListFragmentInteractionListener() {
-        cvAddNote.setVisibility(View.VISIBLE);
-        tvAddNote.setText("Add new note");
         if(savedNotesList != null) {
             this.findViewById(R.id.rl_no_notes).setVisibility(View.GONE);
         }
@@ -149,6 +146,6 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     @Override
     public void OnViewNotesFragmentInteractionListener() {
-        cvAddNote.setVisibility(View.GONE);
+
     }
 }

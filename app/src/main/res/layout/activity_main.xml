@@ -19,7 +19,7 @@
         android:clickable="true"
         android:clipToPadding="true"
         android:focusable="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="@dimen/_2sdp"
         app:cardElevation="@dimen/_3sdp">
 
@@ -59,6 +59,18 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_gravity="center"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/ic_add"
+            android:padding="@dimen/_2sdp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_margin="16dp"
+            app:pressedTranslationZ="12dp"
+            android:visibility="visible"/>
 
     </FrameLayout>
 

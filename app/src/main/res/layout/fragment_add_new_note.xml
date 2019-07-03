@@ -5,17 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.AddNewNoteFragment">
 
-    <TextView
-        android:id="@+id/tv_add_note_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add New Notes"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:textSize="@dimen/_16sdp"/>
-
     <include layout="@layout/layout_add_new_note"
-        android:layout_below="@id/tv_add_note_head"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 

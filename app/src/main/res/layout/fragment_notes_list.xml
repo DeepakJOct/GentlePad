@@ -6,15 +6,6 @@
     android:orientation="vertical"
     tools:context=".fragments.NotesListFragment">
 
-    <TextView
-        android:id="@+id/tv_saved_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Saved Notes"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:textSize="@dimen/_14sdp"/>
-
     <include layout="@layout/layout_no_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -23,7 +14,6 @@
         android:id="@+id/rcv_notes"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/_3sdp"
-        android:layout_below="@+id/tv_saved_head"
         android:layout_height="match_parent"
         android:visibility="visible"/>
 

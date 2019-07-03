@@ -5,22 +5,26 @@
     android:fillViewport="true"
     android:overScrollMode="never">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_470sdp"
-            android:layout_margin="@dimen/margin_total"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:background="@drawable/background_add_view_notes"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp">
 
             <EditText
                 android:id="@+id/et_notes_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_light_red"
+                android:background="@android:color/transparent"
                 android:cursorVisible="true"
                 android:focusable="true"
                 android:hint="@string/enter_title"
@@ -35,13 +39,19 @@
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/_14sdp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="#f79188" />
+
             <EditText
                 android:id="@+id/et_notes_desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top|start"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:background="@color/background_light_red"
+                android:background="@android:color/transparent"
                 android:cursorVisible="true"
                 android:focusable="true"
                 android:gravity="start|left"
@@ -61,32 +71,36 @@
         <LinearLayout
             android:id="@+id/ll_save_buttons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_total"
-            android:layout_marginRight="@dimen/margin_total"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:weightSum="1">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/_1sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/btn_background"
                 android:clickable="true"
-                android:text="@string/btn_text_cancel"
+                android:src="@drawable/ic_cancel"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_1sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/btn_background"
                 android:clickable="true"
-                android:text="@string/btn_text_save"
+                android:src="@drawable/ic_tick"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
@@ -97,37 +111,37 @@
         <LinearLayout
             android:id="@+id/ll_edit_buttons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_total"
-            android:layout_marginRight="@dimen/margin_total"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:visibility="gone"
             android:weightSum="1">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/_1sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/btn_background"
                 android:clickable="true"
-                android:text="@string/btn_text_back"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+                android:src="@drawable/ic_back"
+                android:textAllCaps="true" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_1sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/btn_background"
                 android:clickable="true"
-                android:text="@string/btn_text_edit"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+                android:src="@drawable/ic_edit"
+                android:textAllCaps="true" />
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
