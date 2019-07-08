@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.example.gentlepad.R;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.models.NoteItem;
+
+import java.security.Key;
 
 
 /**
@@ -79,6 +82,20 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         }
         nDate = CommonUtils.getDate();
         getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    getFragmentManager().popBackStack();
+                    mListener.onFragmentInteraction();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 

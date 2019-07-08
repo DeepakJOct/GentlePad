@@ -1,6 +1,7 @@
 package com.example.gentlepad.common;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,20 @@ public class CommonUtils {
     public static void setFont(Context context, TextView textView) {
         Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Satisfy-Regular.ttf");
         textView.setTypeface(font);
+    }
+
+    public static void saveBoolean(Context context, String key, boolean value)
+    {
+        SharedPreferences preferences = context.getSharedPreferences(" SHARED_PREFERENCES_NAME ", android.content.Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public static boolean getBoolean(Context context, String key)
+    {
+        SharedPreferences preferences = context.getSharedPreferences(" SHARED_PREFERENCES_NAME ", android.content.Context.MODE_PRIVATE);
+        return preferences.getBoolean(key, false);
     }
 
 }

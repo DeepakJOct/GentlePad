@@ -1,50 +1,56 @@
 package com.example.gentlepad;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
+import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.fragments.AddNewNoteFragment;
 import com.example.gentlepad.fragments.NotesListFragment;
 import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.models.NoteItem;
-import com.example.gentlepad.splash.SplashActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AddNewNoteFragment.OnFragmentInteractionListener,
         NotesListFragment.OnNotesListFragmentInteractionListener,
         ViewNotesFragment.OnViewNotesFragmentInteractionListener {
 
-    //    android.support.v7.app.ActionBar actionBar;
     DatabaseHelper db;
     NoteItem item;
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
     RelativeLayout rlNoNotes;
+    TextView tvNoNotes;
     FloatingActionButton fabAddNew;
+    List<Fragment> fragmentsBackstackList;
+    boolean isListViewChanged;
+    String fragmentTag;
+    Fragment topFragment;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rlNoNotes = findViewById(R.id.rl_no_notes);
+        tvNoNotes = findViewById(R.id.tv_no_notes);
         fabAddNew = findViewById(R.id.fab);
         if (getDataFromDb() != null) {
-            startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
+            startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", false);
         } else {
             rlNoNotes.setVisibility(View.VISIBLE);
         }
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
             }
         });
 
-        if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
+        if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
             fabAddNew.setVisibility(View.INVISIBLE);
         } else {
             fabAddNew.setVisibility(View.VISIBLE);
@@ -87,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     }
 
+
     void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
         final FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()
                 .beginTransaction();
@@ -105,9 +112,61 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    @Override
+    /*@Override
+    protected void onStop() {
+        fragmentsBackstackList = getAllFragments();
+        if (fragmentsBackstackList == null || fragmentsBackstackList.size() < 0) {
+            super.onStop();
+        } else {
+            topFragment = fragmentsBackstackList.get(fragmentsBackstackList.size() - 1);
+            fragmentTag = topFragment.getTag();
+        }
+    }*/
+
+    /*@Override
     protected void onResume() {
+        resumeFragments();
         super.onResume();
+
+        *//*if (getDataFromDb() != null) {
+            startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
+        }*//*
+
+    }*/
+
+    @Override
+    protected void onStart() {
+        resumeFragments();
+        super.onStart();
+    }
+
+    public void resumeFragments() {
+        if (fragmentTag != null) {
+            CommonUtils.showToastMessage(this, "onResumeThrownFromActivity" + " " + fragmentTag);
+            if (fragmentTag.contains("AddNewNoteFragment")) {
+                startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", false);
+            } else {
+                CommonUtils.showToastMessage(this, "Some Error");
+                //startNewFragment(NotesListFragment.newInstance(), "NoteListFragment", false);
+            }
+        }
+    }
+
+
+    public ArrayList<Fragment> getAllFragments() {
+        ArrayList<Fragment> lista = new ArrayList<>();
+
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            try {
+                fragment.getTag();
+                lista.add(fragment);
+            } catch (NullPointerException e) {
+
+            }
+        }
+
+        return lista;
+
     }
 
     public ArrayList<NoteItem> getDataFromDb() {
@@ -138,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     @Override
     public void OnNotesListFragmentInteractionListener() {
-        if(savedNotesList != null) {
+        if (savedNotesList != null) {
             this.findViewById(R.id.rl_no_notes).setVisibility(View.GONE);
         }
     }
@@ -146,6 +205,6 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     @Override
     public void OnViewNotesFragmentInteractionListener() {
-
+//        Collections.reverse(savedNotesList);
     }
 }

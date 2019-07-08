@@ -6,16 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
+import com.example.gentlepad.MainActivity;
 import com.example.gentlepad.R;
+import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
@@ -25,6 +33,7 @@ import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,9 +48,14 @@ public class NotesListFragment extends Fragment {
     RecyclerView rcvNotes;
     NotesListAdapter notesListAdapter;
     NoteItem item;
+    TextView tvNoNotes;
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
     DatabaseHelper db;
     RelativeLayout rlNoNotes;
+    boolean isNotesViewAsList = false;
+    LinearLayoutManager linearLayoutManager;
+    GridLayoutManager gridLayoutManager;
+    boolean isAllNotesDeleted = false;
 
 
     private OnNotesListFragmentInteractionListener mListener;
@@ -70,20 +84,41 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+        isNotesViewAsList = CommonUtils.getBoolean(getContext(), Constants.LIST_VIEW);
         savedNotesList = getDataFromDb();
         rcvNotes = view.findViewById(R.id.rcv_notes);
         rlNoNotes = view.findViewById(R.id.rl_no_notes);
+        tvNoNotes = view.findViewById(R.id.tv_no_notes);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        /*linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);*/
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        /*gridLayoutManager = new GridLayoutManager(getContext(), 2);
         linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        rcvNotes.setLayoutManager(linearLayoutManager);
-        notesListAdapter = new NotesListAdapter(getContext());
+        linearLayoutManager.setStackFromEnd(true);*/
+//        rcvNotes.setHasFixedSize(true);
+        /*if (!isNotesViewAsList) {
+            Collections.reverse(savedNotesList);
+        }*/
+        rcvNotes.setLayoutManager(isNotesViewAsList ? linearLayoutManager : staggeredGridLayoutManager);
+        notesListAdapter = new NotesListAdapter(getContext(), isNotesViewAsList);
 
         notesListAdapter.resultListenOnDelete(new OnResultListener() {
             @Override
             public void getResult(Object object, boolean isSuccess) {
                 Log.d("onResultListen", "onResult" + object);
+                boolean isAllEmpty = (boolean) object;
+                if (isAllEmpty) {
+                    rlNoNotes.setVisibility(View.VISIBLE);
+                    tvNoNotes.setText("Oops..! Notes list is empty.");
+                    isAllNotesDeleted = true;
+                } else {
+                    rlNoNotes.setVisibility(View.GONE);
+                    tvNoNotes.setText("Just one click away to add notes.");
+                }
             }
         });
 
@@ -95,12 +130,27 @@ public class NotesListFragment extends Fragment {
     }
 
     private void setDataToAdapter() {
-
         if (savedNotesList != null) {
+            Collections.reverse(savedNotesList);
             notesListAdapter.setList(savedNotesList);
             rcvNotes.setAdapter(notesListAdapter);
-
         }
+    }
+
+
+    private void showListOrGrid() {
+        if (!isNotesViewAsList) {
+            StaggeredGridLayoutManager mGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            /*Collections.reverse(savedNotesList);*/
+            rcvNotes.setLayoutManager(mGridLayoutManager);
+        } else {
+            LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+            /*linearLayoutManager.setReverseLayout(true);
+            linearLayoutManager.setStackFromEnd(true);*/
+            rcvNotes.setLayoutManager(mLinearLayoutManager);
+        }
+        notesListAdapter.changeView(isNotesViewAsList);
+        rcvNotes.setAdapter(notesListAdapter);
     }
 
     @Override
@@ -115,6 +165,48 @@ public class NotesListFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.view_change:
+                isNotesViewAsList = !isNotesViewAsList;
+                CommonUtils.saveBoolean(getContext(), Constants.LIST_VIEW, isNotesViewAsList);
+                if(isAllNotesDeleted) {
+                    CommonUtils.showToastMessage(getContext(), "Nothing to view");
+                } else {
+                    CommonUtils.showToastMessage(getContext(), isNotesViewAsList ? "List View" : "Grid View");
+                }
+                //remove this in the end
+                CommonUtils.showToastMessage(getContext(), "isListView:" + isNotesViewAsList);
+                //show list or grid view
+                showListOrGrid();
+                //tell the adapter that view has changed
+                notesListAdapter.notifyDataSetChanged();
+                break;
+            case R.id.menu_settings:
+                CommonUtils.showToastMessage(getContext(), "Development in progress");
+                break;
+            case R.id.app_close:
+                CommonUtils.showToastMessage(getContext(), "Close");
+                getActivity().finish();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
         /*
@@ -123,12 +215,14 @@ public class NotesListFragment extends Fragment {
         if (savedNotesList != null) {
             savedNotesList.clear();
             savedNotesList = getDataFromDb();
+            isNotesViewAsList = CommonUtils.getBoolean(getContext(), Constants.LIST_VIEW);
             setDataToAdapter();
         } else {
             getActivity().onBackPressed();
             if (savedNotesList == null) {
                 getActivity().getWindow().findViewById(R.id.rl_no_notes).setVisibility(View.VISIBLE);
                 TextView tvNoNotes = getActivity().getWindow().findViewById(R.id.tv_no_notes);
+                tvNoNotes.setText("Just one click away to add notes.");
             }
         }
     }

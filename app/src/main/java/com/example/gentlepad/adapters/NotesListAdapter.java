@@ -36,9 +36,13 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     boolean isDeleted = false;
     private String pendingDeleteItem;
     private OnResultListener onResultListener;
+    private boolean isNotesViewAsList;
+    private LayoutInflater layoutInflater;
 
-    public NotesListAdapter(Context context) {
+    public NotesListAdapter(Context context, boolean isListView) {
         this.context = context;
+        this.isNotesViewAsList = isListView;
+        layoutInflater = LayoutInflater.from(context);
     }
 
     public void setList(ArrayList<NoteItem> mNotesList) {
@@ -54,8 +58,17 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     @Override
     public NotesListAdapter.SavedNotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        /*View view;
+        if(viewType == 0) {
+            view = layoutInflater.inflate(R.layout.item_notes, parent, false);
+        } else {
+            view = layoutInflater.inflate(R.layout.item_notes_grid, parent, false);
+        }*/
+
         return new SavedNotesViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_notes, parent, false));
+                .inflate(isNotesViewAsList ? R.layout.item_notes : R.layout.item_notes_grid, parent, false));
+//        View view = LayoutInflater.from(parent.getContext()).inflate(isNotesViewAsList ? R.layout.item_notes : R.layout.item_notes_grid, null);
+//        return new SavedNotesViewHolder(view);
     }
 
 
@@ -103,6 +116,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         }
 
 
+    }
+
+    public void changeView(boolean isNotesViewShowing) {
+        isNotesViewAsList = isNotesViewShowing;
+        notifyDataSetChanged();
     }
 
 

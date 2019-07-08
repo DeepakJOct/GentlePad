@@ -10,6 +10,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.gentlepad.R;
+import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.models.NoteItem;
@@ -84,7 +88,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        setHasOptionsMenu(true);
         db = new DatabaseHelper(getContext());
         etNotesTitle = view.findViewById(R.id.et_notes_title);
         etNotesDesc = view.findViewById(R.id.et_notes_desc);
@@ -138,6 +142,34 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        if(menu != null) {
+            menu.findItem(R.id.view_change).setVisible(false);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.menu_settings:
+                CommonUtils.showToastMessage(getContext(), "Development in progress");
+                break;
+            case R.id.app_close:
+                CommonUtils.showToastMessage(getContext(), "Close");
+                getActivity().finish();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
 
