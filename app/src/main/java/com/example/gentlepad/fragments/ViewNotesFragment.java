@@ -146,6 +146,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.menu, menu);
         if(menu != null) {
             menu.findItem(R.id.view_change).setVisible(false);

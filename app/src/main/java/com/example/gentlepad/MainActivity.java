@@ -4,13 +4,12 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     boolean isListViewChanged;
     String fragmentTag;
     Fragment topFragment;
+    Toolbar mTopToolbar;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         rlNoNotes = findViewById(R.id.rl_no_notes);
         tvNoNotes = findViewById(R.id.tv_no_notes);
         fabAddNew = findViewById(R.id.fab);
+        mTopToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mTopToolbar);
         if (getDataFromDb() != null) {
             startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", false);
         } else {
@@ -93,6 +95,28 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_settings:
+                CommonUtils.showToastMessage(this, "Development in progress");
+                break;
+            case R.id.app_close:
+                CommonUtils.showToastMessage(this, "Close");
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
         final FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()

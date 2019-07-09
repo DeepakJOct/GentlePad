@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,9 +92,20 @@ public class NotesListFragment extends Fragment {
         rlNoNotes = view.findViewById(R.id.rl_no_notes);
         tvNoNotes = view.findViewById(R.id.tv_no_notes);
 
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
         linearLayoutManager = new LinearLayoutManager(getContext());
         /*linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);*/
+
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         /*gridLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -192,7 +204,7 @@ public class NotesListFragment extends Fragment {
                 //tell the adapter that view has changed
                 notesListAdapter.notifyDataSetChanged();
                 break;
-            case R.id.menu_settings:
+            /*case R.id.menu_settings:
                 CommonUtils.showToastMessage(getContext(), "Development in progress");
                 break;
             case R.id.app_close:
@@ -200,7 +212,7 @@ public class NotesListFragment extends Fragment {
                 getActivity().finish();
                 break;
             default:
-                break;
+                break;*/
         }
         return true;
     }

@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -65,6 +68,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         etNotesTitle = view.findViewById(R.id.et_notes_title);
         etNotesDesc = view.findViewById(R.id.et_notes_desc);
         btnSave = view.findViewById(R.id.btn_save);
@@ -88,7 +92,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
                     getFragmentManager().popBackStack();
                     mListener.onFragmentInteraction();
                     return true;
@@ -98,6 +102,34 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu, menu);
+        if (menu != null) {
+            menu.findItem(R.id.view_change).setVisible(false);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.menu_settings:
+                CommonUtils.showToastMessage(getContext(), "Development in progress");
+                break;
+            case R.id.app_close:
+                CommonUtils.showToastMessage(getContext(), "Close");
+                getActivity().finish();
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
 
     @Override
     public void onAttach(Context context) {
