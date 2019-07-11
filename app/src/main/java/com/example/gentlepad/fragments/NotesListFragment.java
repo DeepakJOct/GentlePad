@@ -55,6 +55,7 @@ public class NotesListFragment extends Fragment {
     RelativeLayout rlNoNotes;
     boolean isNotesViewAsList = false;
     LinearLayoutManager linearLayoutManager;
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
     GridLayoutManager gridLayoutManager;
     boolean isAllNotesDeleted = false;
 
@@ -66,7 +67,8 @@ public class NotesListFragment extends Fragment {
     }
 
     public static NotesListFragment newInstance() {
-        return new NotesListFragment();
+        NotesListFragment fragment = new NotesListFragment();
+        return fragment;
     }
 
     @Override
@@ -107,7 +109,7 @@ public class NotesListFragment extends Fragment {
         linearLayoutManager.setStackFromEnd(true);*/
 
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         /*gridLayoutManager = new GridLayoutManager(getContext(), 2);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);*/
@@ -192,7 +194,7 @@ public class NotesListFragment extends Fragment {
             case R.id.view_change:
                 isNotesViewAsList = !isNotesViewAsList;
                 CommonUtils.saveBoolean(getContext(), Constants.LIST_VIEW, isNotesViewAsList);
-                if(isAllNotesDeleted) {
+                if (isAllNotesDeleted) {
                     CommonUtils.showToastMessage(getContext(), "Nothing to view");
                 } else {
                     CommonUtils.showToastMessage(getContext(), isNotesViewAsList ? "List View" : "Grid View");
@@ -204,15 +206,6 @@ public class NotesListFragment extends Fragment {
                 //tell the adapter that view has changed
                 notesListAdapter.notifyDataSetChanged();
                 break;
-            /*case R.id.menu_settings:
-                CommonUtils.showToastMessage(getContext(), "Development in progress");
-                break;
-            case R.id.app_close:
-                CommonUtils.showToastMessage(getContext(), "Close");
-                getActivity().finish();
-                break;
-            default:
-                break;*/
         }
         return true;
     }
@@ -228,7 +221,9 @@ public class NotesListFragment extends Fragment {
             savedNotesList.clear();
             savedNotesList = getDataFromDb();
             isNotesViewAsList = CommonUtils.getBoolean(getContext(), Constants.LIST_VIEW);
+            showListOrGrid();
             setDataToAdapter();
+            notesListAdapter.notifyDataSetChanged();
         } else {
             getActivity().onBackPressed();
             if (savedNotesList == null) {

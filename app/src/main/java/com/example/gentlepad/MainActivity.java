@@ -1,6 +1,7 @@
 package com.example.gentlepad;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -8,10 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     String fragmentTag;
     Fragment topFragment;
     Toolbar mTopToolbar;
+    private boolean isFontSizeIncreased;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -109,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         switch (id) {
             case R.id.menu_settings:
                 CommonUtils.showToastMessage(this, "Development in progress");
+                isFontSizeIncreased = true;
                 break;
             case R.id.app_close:
                 CommonUtils.showToastMessage(this, "Close");

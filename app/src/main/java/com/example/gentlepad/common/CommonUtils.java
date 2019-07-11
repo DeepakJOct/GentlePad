@@ -2,13 +2,18 @@ package com.example.gentlepad.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.content.Context.WINDOW_SERVICE;
 
 
 public class CommonUtils {
@@ -51,6 +56,16 @@ public class CommonUtils {
     {
         SharedPreferences preferences = context.getSharedPreferences(" SHARED_PREFERENCES_NAME ", android.content.Context.MODE_PRIVATE);
         return preferences.getBoolean(key, false);
+    }
+
+    public static void adjustFontScale(Context context, Configuration configuration, float scale) {
+        configuration.fontScale = scale;
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        context.getResources().updateConfiguration(configuration, metrics);
+
     }
 
 }
