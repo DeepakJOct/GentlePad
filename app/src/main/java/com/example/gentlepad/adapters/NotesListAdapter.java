@@ -97,9 +97,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
                                 isDeleted = db.deleteNotes(pendingDeleteItem);
                                 if (isDeleted) {
                                     CommonUtils.showToastMessage(context, "Deleted");
-                                    onResultListener.getResult(isDeleted, true);
                                 } else {
                                     CommonUtils.showToastMessage(context, "Error");
+                                }
+                                if (isDeleted && savedNotesList.size() == 0) {
+                                    onResultListener.getResult(isDeleted, true);
                                 }
                             }
                         }).show(fm, "YesOrNoDialogFragment");

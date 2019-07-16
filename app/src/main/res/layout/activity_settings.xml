@@ -33,12 +33,13 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_font_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:backgroundTint="@color/red"
-                android:text="Small"
+                android:text=""
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_9sdp" />
 
@@ -83,7 +84,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:backgroundTint="@color/red"
-                android:text="Name"
+                android:text=""
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_9sdp" />
 

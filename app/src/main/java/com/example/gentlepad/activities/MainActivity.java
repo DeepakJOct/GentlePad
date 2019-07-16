@@ -2,21 +2,17 @@ package com.example.gentlepad.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.opengl.Visibility;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         setSupportActionBar(mTopToolbar);
         if (getDataFromDb() != null) {
             startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", false);
-            if(rlNoNotes.getVisibility() == View.VISIBLE) {
+            if (rlNoNotes.getVisibility() == View.VISIBLE) {
                 rlNoNotes.setVisibility(View.GONE);
             }
         } else {
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
             @Override
             public void onClick(View view) {
                 startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
-                if(rlNoNotes.getVisibility() == View.VISIBLE) {
+                if (rlNoNotes.getVisibility() == View.VISIBLE) {
                     rlNoNotes.setVisibility(View.GONE);
                 }
             }
@@ -93,21 +89,19 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                 getSupportFragmentManager().popBackStack();
             } else if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof ViewNotesFragment) {
                 getSupportFragmentManager().popBackStack();
-            } else {
-                if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
-                    if (savedNotesList == null) {
-                        //changed here
-                        getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag("NoteListFragment")).commit();
-                        rlNoNotes.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    finish();
+            } else if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
+                if (savedNotesList == null) {
+                    //changed here
+                    getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag("NoteListFragment")).commit();
+                    rlNoNotes.setVisibility(View.VISIBLE);
                 }
+            } else {
+                super.onBackPressed();
             }
+
         }
 
     }
-
 
 
     @Override
