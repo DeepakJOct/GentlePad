@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toolbar;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
@@ -52,6 +53,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     private String oldNotesTitle, oldNotesDesc, newNotesTitle, newNotesDesc;
     private boolean isTitleChanged, isDescChanged;
     private String[] noteItemsArray;
+    Toolbar mTopToolbar;
 
     public ViewNotesFragment() {
         // Required empty public constructor
@@ -103,6 +105,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         btnBack.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
 
+        getActivity().setTitle("View Notes");
+
         if (noteItem != null) {
             //Getting and saving notes title for selection in database.
             oldNotesTitle = noteItem.getNotesTitle();
@@ -141,6 +145,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onDetach() {
         super.onDetach();
+        getActivity().setTitle("View Notes");
         mListener = null;
     }
 

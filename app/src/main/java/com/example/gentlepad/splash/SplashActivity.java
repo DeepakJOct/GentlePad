@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.gentlepad.MainActivity;
+import com.example.gentlepad.activities.MainActivity;
 import com.example.gentlepad.R;
 import com.example.gentlepad.common.CommonUtils;
 

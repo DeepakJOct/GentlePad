@@ -20,16 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
-import com.example.gentlepad.MainActivity;
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
-import com.example.gentlepad.listeners.DeleteItemListener;
-import com.example.gentlepad.listeners.OnClickResultListener;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
@@ -201,10 +197,14 @@ public class NotesListFragment extends Fragment {
                 }
                 //remove this in the end
                 CommonUtils.showToastMessage(getContext(), "isListView:" + isNotesViewAsList);
-                //show list or grid view
-                showListOrGrid();
-                //tell the adapter that view has changed
-                notesListAdapter.notifyDataSetChanged();
+                if (savedNotesList != null) {
+                    //show list or grid view
+                    showListOrGrid();
+                    //tell the adapter that view has changed
+                    notesListAdapter.notifyDataSetChanged();
+                } else {
+                    CommonUtils.showToastMessage(getContext(), "Nothing to view. Click (+) button to add notes.");
+                }
                 break;
         }
         return true;

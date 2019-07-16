@@ -1,8 +1,10 @@
-package com.example.gentlepad;
+package com.example.gentlepad.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.opengl.Visibility;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.gentlepad.R;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.fragments.AddNewNoteFragment;
@@ -57,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         setSupportActionBar(mTopToolbar);
         if (getDataFromDb() != null) {
             startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", false);
+            if(rlNoNotes.getVisibility() == View.VISIBLE) {
+                rlNoNotes.setVisibility(View.GONE);
+            }
         } else {
             rlNoNotes.setVisibility(View.VISIBLE);
         }
@@ -64,11 +70,14 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
             @Override
             public void onClick(View view) {
                 startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
+                if(rlNoNotes.getVisibility() == View.VISIBLE) {
+                    rlNoNotes.setVisibility(View.GONE);
+                }
             }
         });
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof AddNewNoteFragment) {
-            fabAddNew.setVisibility(View.INVISIBLE);
+            fabAddNew.setVisibility(View.GONE);
         } else {
             fabAddNew.setVisibility(View.VISIBLE);
         }
@@ -114,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
         switch (id) {
             case R.id.menu_settings:
-                CommonUtils.showToastMessage(this, "Development in progress");
-                isFontSizeIncreased = true;
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.app_close:
                 CommonUtils.showToastMessage(this, "Close");
