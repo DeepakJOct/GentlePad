@@ -20,17 +20,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.dialogs.SortByDialogFragment;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,9 +60,16 @@ public class NotesListFragment extends Fragment {
 
 
     private OnNotesListFragmentInteractionListener mListener;
+    private float selectedFontSize;
 
     public NotesListFragment() {
         // Required empty public constructor
+    }
+
+    public static NotesListFragment newInstance(float selectedFontSize) {
+        NotesListFragment fragment = new NotesListFragment();
+        fragment.selectedFontSize = selectedFontSize;
+        return fragment;
     }
 
     public static NotesListFragment newInstance() {
@@ -133,17 +143,21 @@ public class NotesListFragment extends Fragment {
         });
 
         getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.VISIBLE);
-
         mListener.OnNotesListFragmentInteractionListener();
-
-
     }
 
-    private void setDataToAdapter() {
+    private void setDataToAdapter(boolean isFromSort) {
         if (savedNotesList != null) {
-            Collections.reverse(savedNotesList);
-            notesListAdapter.setList(savedNotesList);
-            rcvNotes.setAdapter(notesListAdapter);
+            //if not from sort the default list will be reversed & served
+            //else after sorting recyclerview will get sorted
+            if (isFromSort) {
+                notesListAdapter.setList(savedNotesList);
+                rcvNotes.setAdapter(notesListAdapter);
+            } else {
+                Collections.reverse(savedNotesList);
+                notesListAdapter.setList(savedNotesList);
+                rcvNotes.setAdapter(notesListAdapter);
+            }
         }
     }
 
@@ -162,6 +176,38 @@ public class NotesListFragment extends Fragment {
         notesListAdapter.changeView(isNotesViewAsList);
         rcvNotes.setAdapter(notesListAdapter);
     }
+
+    public void sortNotesBy(String sortOption) {
+        Toast.makeText(getActivity(), "Fragment Option: " + sortOption, Toast.LENGTH_SHORT).show();
+        if (sortOption.equalsIgnoreCase(Constants.NONE)) {
+
+            //No option
+
+        } else if (sortOption.equalsIgnoreCase(Constants.ASCENDING)) {
+
+            Collections.sort(savedNotesList, new Comparator<NoteItem>() {
+                @Override
+                public int compare(NoteItem noteItem, NoteItem t1) {
+                    return noteItem.getNotesTitle().compareTo(t1.getNotesTitle());
+                }
+            });
+
+        } else if (sortOption.equalsIgnoreCase(Constants.DESCENDING)) {
+
+            Collections.reverse(savedNotesList);
+
+        } else if (sortOption.equalsIgnoreCase(Constants.DATE_MODIFIED)) {
+
+            Collections.sort(savedNotesList, new Comparator<NoteItem>() {
+                public int compare(NoteItem o1, NoteItem o2) {
+                    return o2.getDate().compareTo(o1.getDate());
+                }
+            });
+
+        }
+        notesListAdapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -222,16 +268,17 @@ public class NotesListFragment extends Fragment {
             savedNotesList = getDataFromDb();
             isNotesViewAsList = CommonUtils.getBoolean(getContext(), Constants.LIST_VIEW);
             showListOrGrid();
-            setDataToAdapter();
+            setDataToAdapter(false);
             notesListAdapter.notifyDataSetChanged();
         } else {
-            getActivity().onBackPressed();
+//            getActivity().onBackPressed();
             if (savedNotesList == null) {
                 getActivity().getWindow().findViewById(R.id.rl_no_notes).setVisibility(View.VISIBLE);
                 TextView tvNoNotes = getActivity().getWindow().findViewById(R.id.tv_no_notes);
                 tvNoNotes.setText("Just one click away to add notes.");
             }
         }
+
     }
 
     @Override

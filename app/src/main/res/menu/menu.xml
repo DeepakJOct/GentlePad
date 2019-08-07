@@ -4,11 +4,11 @@
 
     <item
         android:id="@+id/view_change"
-        android:title="View List/Grid" />
+        android:title="List/Grid" />
 
     <item
         android:id="@+id/menu_settings"
-        android:title="Settings" />
+        android:title="Sort By" />
 
     <item
         android:id="@+id/app_close"

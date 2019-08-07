@@ -25,6 +25,7 @@ import android.widget.Toolbar;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
+import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.models.NoteItem;
@@ -105,7 +106,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         btnBack.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
 
-        getActivity().setTitle("View Notes");
+//        getActivity().setTitle("View Notes");
 
         if (noteItem != null) {
             //Getting and saving notes title for selection in database.
@@ -145,7 +146,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onDetach() {
         super.onDetach();
-        getActivity().setTitle("View Notes");
+//        getActivity().setTitle("View Notes");
         mListener = null;
     }
 
@@ -153,8 +154,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu, menu);
-        if(menu != null) {
+        if (menu != null) {
             menu.findItem(R.id.view_change).setVisible(false);
+            menu.findItem(R.id.menu_settings).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -165,9 +167,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         int itemId = item.getItemId();
 
         switch (itemId) {
-            case R.id.menu_settings:
+            /*case R.id.menu_settings:
                 CommonUtils.showToastMessage(getContext(), "Development in progress");
-                break;
+                break;*/
             case R.id.app_close:
                 CommonUtils.showToastMessage(getContext(), "Close");
                 getActivity().finish();
@@ -178,6 +180,11 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         return false;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     public void getEditedNotes() {
         noteItemsArray = new String[3];
@@ -257,6 +264,21 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
             getActivity().onBackPressed();
         }
     }
+
+    //If preference file holds the font size flag then change the font sizes of the textviews only.
+    public void changeFontSizeofTextViews() {
+        if (Prefs.getString(Constants.FONT_SIZE, "") != null) {
+            String fontSize = Prefs.getString(Constants.FONT_SIZE, "");
+            if (fontSize.equalsIgnoreCase(Constants.SMALL)) {
+                //Put the textview font sizes as it is
+            } else if (fontSize.equalsIgnoreCase(Constants.MEDIUM)) {
+                //Increase the textview font sizes to 10 points
+            } else if (fontSize.equalsIgnoreCase(Constants.LARGE)) {
+                //Increase the textview font sizes to 10 more points
+            }
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

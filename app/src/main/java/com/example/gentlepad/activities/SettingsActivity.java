@@ -1,5 +1,7 @@
 package com.example.gentlepad.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -68,6 +70,15 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     CommonUtils.showToastMessage(SettingsActivity.this, "String: " + fontSizeString);
                     tvFontSize.setText(fontSizeString);
                     Prefs.putString(Constants.FONT_SIZE, fontSizeString);
+
+                    /*
+                    * Set font size to intent, it will send
+                    * to the resulting intent i.e., MainActivity
+                    * */
+                    Intent resultIntent = new Intent();
+// TODO Add extras or a data URI to this intent as appropriate.
+                    resultIntent.putExtra(Constants.FONT_SIZE, fontSizeString);
+                    setResult(RESULT_OK, resultIntent);
                 }
             }
         });
@@ -96,5 +107,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         } else if (view.getId() == R.id.ll_sort) {
             sortNotesBy();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }

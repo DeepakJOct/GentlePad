@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.gentlepad.R;
+import com.example.gentlepad.listeners.OnResultListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,14 +42,26 @@ public class SortByDialogFragment extends DialogFragment implements View.OnClick
 
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
-    @BindView(R.id.check_btn_one)
-    RadioButton checkBtnOne;
-    @BindView(R.id.check_btn_two)
-    RadioButton checkBtnTwo;
+    @BindView(R.id.chk_btn_1)
+    RadioButton chkBtn1;
+    @BindView(R.id.chk_btn_2)
+    RadioButton chkBtn2;
+    @BindView(R.id.chk_btn_3)
+    RadioButton chkBtn3;
+    @BindView(R.id.chk_btn_4)
+    RadioButton chkBtn4;
+
+    private String sortOption;
+    private OnResultListener onResultListener;
+    int option;
 
 
     public SortByDialogFragment() {
 
+    }
+
+    public SortByDialogFragment(OnResultListener onResultListener) {
+        this.onResultListener = onResultListener;
     }
 
 
@@ -74,6 +87,22 @@ public class SortByDialogFragment extends DialogFragment implements View.OnClick
         /*tvFontSmall.setOnClickListener(this);
         tvFontMedium.setOnClickListener(this);
         tvFontLarge.setOnClickListener(this);*/
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int button) {
+                if (button == R.id.chk_btn_1) {
+                    option = 1;
+                } else if (button == R.id.chk_btn_2) {
+                    option = 2;
+                } else if (button == R.id.chk_btn_3) {
+                    option = 3;
+                } else if (button == R.id.chk_btn_4) {
+                    option = 4;
+                }
+
+            }
+        });
     }
 
 
@@ -87,13 +116,25 @@ public class SortByDialogFragment extends DialogFragment implements View.OnClick
         if (view == ivCancel) {
             dismiss();
         } else if (view == ivDone) {
+            switch (option) {
+                case 1:
+                    sortOption = chkBtn1.getText().toString();
+                    onResultListener.getResult(sortOption, true);
+                    break;
+                case 2:
+                    sortOption = chkBtn2.getText().toString();
+                    onResultListener.getResult(sortOption, true);
+                    break;
+                case 3:
+                    sortOption = chkBtn3.getText().toString();
+                    onResultListener.getResult(sortOption, true);
+                    break;
+                case 4:
+                    sortOption = chkBtn4.getText().toString();
+                    onResultListener.getResult(sortOption, true);
+                    break;
+            }
             dismiss();
-        } /*else if (view == tvFontSmall) {
-            CommonUtils.showToastMessage(getContext(), "Small Font");
-        } else if (view == tvFontMedium) {
-            CommonUtils.showToastMessage(getContext(), "Medium Font");
-        } else if (view == tvFontLarge) {
-            CommonUtils.showToastMessage(getContext(), "Large Font");
-        }*/
+        }
     }
 }

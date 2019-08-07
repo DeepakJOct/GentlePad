@@ -3,6 +3,7 @@ package com.example.gentlepad.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,13 +16,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gentlepad.R;
+import com.example.gentlepad.Utilities.Constants;
+import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.dialogs.HelpDialogFragment;
+import com.example.gentlepad.dialogs.SortByDialogFragment;
 import com.example.gentlepad.fragments.AddNewNoteFragment;
 import com.example.gentlepad.fragments.NotesListFragment;
 import com.example.gentlepad.fragments.ViewNotesFragment;
+import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
 import java.util.ArrayList;
@@ -43,12 +50,18 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     Fragment topFragment;
     Toolbar mTopToolbar;
     private boolean isFontSizeIncreased;
+    private int FONT_SELECT_REQUEST = 100, SORT_BY_REQUEST = 101;
+    private String fontSize;
+    private float selectedFontSize;
+    private NotesListFragment notesListFragment;
+
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Prefs.initPrefs(this);
         rlNoNotes = findViewById(R.id.rl_no_notes);
         tvNoNotes = findViewById(R.id.tv_no_notes);
         fabAddNew = findViewById(R.id.fab);
@@ -65,7 +78,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
+                new HelpDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
+                //startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
                 if (rlNoNotes.getVisibility() == View.VISIBLE) {
                     rlNoNotes.setVisibility(View.GONE);
                 }
@@ -94,15 +108,16 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                     //changed here
                     getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentByTag("NoteListFragment")).commit();
                     rlNoNotes.setVisibility(View.VISIBLE);
+                } else {
+                    finish();
                 }
             } else {
                 super.onBackPressed();
             }
-
         }
 
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,8 +132,22 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
         switch (id) {
             case R.id.menu_settings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
+                new SortByDialogFragment(new OnResultListener() {
+                    @Override
+                    public void getResult(Object object, boolean isSuccess) {
+                        if (isSuccess) {
+                            String option = (String) object;
+                            if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
+                                NotesListFragment f = (NotesListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                                f.sortNotesBy(option);
+                            }
+//                            Toast.makeText(MainActivity.this, "Option: " + option, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).show(getSupportFragmentManager(), "SortByDialogFragment");
+
+                /*Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(intent, FONT_SELECT_REQUEST);*/
                 break;
             case R.id.app_close:
                 CommonUtils.showToastMessage(this, "Close");
@@ -126,6 +155,47 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FONT_SELECT_REQUEST) {
+//            CommonUtils.showToastMessage(MainActivity.this, "requestCode--> " + requestCode + "data--> " + data);
+
+            if (resultCode == RESULT_OK && data != null) {
+                fontSize = data.getStringExtra(Constants.FONT_SIZE);
+                //Yeheh....! We are getting the font size from settings activity here.
+                CommonUtils.showToastMessage(MainActivity.this, "Selected font size is \"" + fontSize + "\"");
+                Prefs.putString(Constants.FONT_SIZE, fontSize);
+
+            }
+        }
+    }
+
+    /*
+     * Changing the font sizes for the whole app. Check the below site out,
+     * https://stackoverflow.com/questions/12704216/how-to-change-the-font-size-in-a-whole-application-programmatically-android
+     *
+     * */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /*
+         * Get font size string from the font selection dialog in settings activity.
+         * */
+        if (fontSize != null) {
+            CommonUtils.showToastMessage(this, fontSize);
+            if (fontSize.equalsIgnoreCase(Constants.MEDIUM)) {
+                selectedFontSize = 1.5f;
+                CommonUtils.showToastMessage(this, "@Onresume-->" + selectedFontSize + "");
+                Prefs.putFloat(Constants.SELECTED_FONT_SIZE, selectedFontSize);
+            } else {
+                selectedFontSize = 0;
+                Prefs.putFloat(Constants.SELECTED_FONT_SIZE, selectedFontSize);
+            }
+        }
     }
 
     void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
@@ -145,28 +215,6 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         }
         fragmentTransaction.commitAllowingStateLoss();
     }
-
-    /*@Override
-    protected void onStop() {
-        fragmentsBackstackList = getAllFragments();
-        if (fragmentsBackstackList == null || fragmentsBackstackList.size() < 0) {
-            super.onStop();
-        } else {
-            topFragment = fragmentsBackstackList.get(fragmentsBackstackList.size() - 1);
-            fragmentTag = topFragment.getTag();
-        }
-    }*/
-
-    /*@Override
-    protected void onResume() {
-        resumeFragments();
-        super.onResume();
-
-        *//*if (getDataFromDb() != null) {
-            startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
-        }*//*
-
-    }*/
 
     @Override
     protected void onStart() {
@@ -198,9 +246,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
             }
         }
-
         return lista;
-
     }
 
     public ArrayList<NoteItem> getDataFromDb() {
@@ -239,6 +285,6 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     @Override
     public void OnViewNotesFragmentInteractionListener() {
-//        Collections.reverse(savedNotesList);
+
     }
 }

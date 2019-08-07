@@ -108,6 +108,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         inflater.inflate(R.menu.menu, menu);
         if (menu != null) {
             menu.findItem(R.id.view_change).setVisible(false);
+            menu.findItem(R.id.menu_settings).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -118,9 +119,9 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         int itemId = item.getItemId();
 
         switch (itemId) {
-            case R.id.menu_settings:
+            /*case R.id.menu_settings:
                 CommonUtils.showToastMessage(getContext(), "Development in progress");
-                break;
+                break;*/
             case R.id.app_close:
                 CommonUtils.showToastMessage(getContext(), "Close");
                 getActivity().finish();
@@ -151,10 +152,12 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         if (view.getId() == (R.id.btn_cancel)) {
-//            CommonUtils.showToastMessage(getContext(), "Clicked");
-//            getFragmentManager().beginTransaction().remove(this).commit();
-            getFragmentManager().popBackStack();
+
+            /*final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.container, new NotesListFragment(), "NotesListFragment");
+            ft.commit();*/
             mListener.onFragmentInteraction();
+
         } else if (view.getId() == (R.id.btn_save)) {
             if (validations()) {
                 saveNotes(getContext(), nTitle, nDesc, nDate);
