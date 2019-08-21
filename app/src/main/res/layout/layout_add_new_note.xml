@@ -15,7 +15,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_47sdp"
             android:background="@drawable/background_add_view_notes"
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
@@ -29,13 +29,14 @@
                 android:focusable="true"
                 android:hint="@string/enter_title"
                 android:imeOptions="actionNext"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:nextFocusDown="@+id/et_notes_desc"
                 android:paddingLeft="@dimen/_4sdp"
                 android:paddingTop="@dimen/_2sdp"
                 android:paddingRight="@dimen/_2sdp"
                 android:paddingBottom="@dimen/_2sdp"
                 android:textColor="@color/text_color"
+                android:textStyle="bold"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/_14sdp" />
 
@@ -56,7 +57,7 @@
                 android:focusable="true"
                 android:gravity="start|left"
                 android:hint="@string/enter_notes_description"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences|textMultiLine"
                 android:paddingLeft="@dimen/_4sdp"
                 android:paddingTop="@dimen/_2sdp"
                 android:paddingRight="@dimen/_2sdp"

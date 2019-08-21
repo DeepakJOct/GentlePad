@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.dialogs.HelpDialogFragment;
 import com.example.gentlepad.models.NoteItem;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -129,6 +131,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         //EditTexts will be enabled and Save and Cancel button will be visible.
         //on again click on save button, the current item details will get updated
         //with edited text and edited date will also be updated.
+        FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
+
 
     }
 
@@ -167,6 +171,9 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         int itemId = item.getItemId();
 
         switch (itemId) {
+            /*case R.id.help:
+                new HelpDialogFragment().show(getFragmentManager(), "HelpDialogFragment");
+                break;*/
             /*case R.id.menu_settings:
                 CommonUtils.showToastMessage(getContext(), "Development in progress");
                 break;*/

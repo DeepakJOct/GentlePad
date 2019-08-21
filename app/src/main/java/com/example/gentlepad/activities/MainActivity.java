@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new HelpDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
-                //startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
+//                new HelpDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
+                startNewFragment(AddNewNoteFragment.newInstance(), "AddNewNoteFragment", true);
                 if (rlNoNotes.getVisibility() == View.VISIBLE) {
                     rlNoNotes.setVisibility(View.GONE);
                 }
@@ -131,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.help:
+                new HelpDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
+                break;
             case R.id.menu_settings:
                 new SortByDialogFragment(new OnResultListener() {
                     @Override
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                 startActivityForResult(intent, FONT_SELECT_REQUEST);*/
                 break;
             case R.id.app_close:
-                CommonUtils.showToastMessage(this, "Close");
+//                CommonUtils.showToastMessage(this, "Close");
                 finish();
                 break;
         }

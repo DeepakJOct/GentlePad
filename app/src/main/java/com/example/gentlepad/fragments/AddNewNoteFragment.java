@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import com.example.gentlepad.R;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.dialogs.HelpDialogFragment;
 import com.example.gentlepad.models.NoteItem;
 
 import java.security.Key;
@@ -119,6 +120,9 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         int itemId = item.getItemId();
 
         switch (itemId) {
+            /*case R.id.help:
+                new HelpDialogFragment().show(getFragmentManager(), "HelpDialogFragment");
+                break;*/
             /*case R.id.menu_settings:
                 CommonUtils.showToastMessage(getContext(), "Development in progress");
                 break;*/

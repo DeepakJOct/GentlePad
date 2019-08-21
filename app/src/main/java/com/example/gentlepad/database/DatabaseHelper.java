@@ -92,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL_2, noteItems[0]);
         cv.put(COL_3, noteItems[1]);
         cv.put(COL_4, noteItems[2]);
-        CommonUtils.showToastMessage(context, "Items--> " + noteItems[0] + "\n" + noteItems[1]);
+//        CommonUtils.showToastMessage(context, "Items--> " + noteItems[0] + "\n" + noteItems[1]);
         long result = db.update(TABLE_NAME, cv, COL_2 + "=?", new String[]{oldNotesTitle});
         db.close();
         if (result > 0) {

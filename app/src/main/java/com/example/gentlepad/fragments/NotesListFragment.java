@@ -24,9 +24,11 @@ import android.widget.Toast;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
+import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
+import com.example.gentlepad.dialogs.HelpDialogFragment;
 import com.example.gentlepad.dialogs.SortByDialogFragment;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
@@ -178,7 +180,7 @@ public class NotesListFragment extends Fragment {
     }
 
     public void sortNotesBy(String sortOption) {
-        Toast.makeText(getActivity(), "Fragment Option: " + sortOption, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Sort by: " + sortOption, Toast.LENGTH_SHORT).show();
         if (sortOption.equalsIgnoreCase(Constants.NONE)) {
 
             //No option
@@ -225,14 +227,24 @@ public class NotesListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu, menu);
+        boolean isListView = CommonUtils.getBoolean(getActivity(), Constants.LIST_VIEW);
+        if (isListView) {
+            menu.getItem(1).setTitle("Switch to Grid");
+        } else {
+            menu.getItem(1).setTitle("Switch to List");
+        }
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int itemId = item.getItemId();
 
         switch (itemId) {
+            /*case R.id.help:
+                new HelpDialogFragment().show(getFragmentManager(), "HelpDialogFragment");
+                break;*/
             case R.id.view_change:
                 isNotesViewAsList = !isNotesViewAsList;
                 CommonUtils.saveBoolean(getContext(), Constants.LIST_VIEW, isNotesViewAsList);
@@ -242,12 +254,17 @@ public class NotesListFragment extends Fragment {
                     CommonUtils.showToastMessage(getContext(), isNotesViewAsList ? "List View" : "Grid View");
                 }
                 //remove this in the end
-                CommonUtils.showToastMessage(getContext(), "isListView:" + isNotesViewAsList);
+//                CommonUtils.showToastMessage(getContext(), "isListView:" + isNotesViewAsList);
                 if (savedNotesList != null) {
                     //show list or grid view
                     showListOrGrid();
                     //tell the adapter that view has changed
                     notesListAdapter.notifyDataSetChanged();
+                    if (isNotesViewAsList) {
+                        item.setTitle("Switch to Grid");
+                    } else {
+                        item.setTitle("Switch to List");
+                    }
                 } else {
                     CommonUtils.showToastMessage(getContext(), "Nothing to view. Click (+) button to add notes.");
                 }
