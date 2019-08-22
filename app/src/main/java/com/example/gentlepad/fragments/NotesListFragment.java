@@ -1,10 +1,12 @@
 package com.example.gentlepad.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,6 +61,7 @@ public class NotesListFragment extends Fragment {
     StaggeredGridLayoutManager staggeredGridLayoutManager;
     GridLayoutManager gridLayoutManager;
     boolean isAllNotesDeleted = false;
+    private ViewGroup.MarginLayoutParams params;
 
 
     private OnNotesListFragmentInteractionListener mListener;
@@ -92,6 +95,7 @@ public class NotesListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_notes_list, container, false);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -143,8 +147,10 @@ public class NotesListFragment extends Fragment {
                 }
             }
         });
-
-        getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.VISIBLE);
+        FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        params = (ViewGroup.MarginLayoutParams) fab.getLayoutParams();
+        fab.setLayoutParams(params);
         mListener.OnNotesListFragmentInteractionListener();
     }
 

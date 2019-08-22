@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -57,6 +58,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
     private boolean isTitleChanged, isDescChanged;
     private String[] noteItemsArray;
     Toolbar mTopToolbar;
+    private ViewGroup.MarginLayoutParams prevParams;
 
     public ViewNotesFragment() {
         // Required empty public constructor
@@ -132,8 +134,10 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         //on again click on save button, the current item details will get updated
         //with edited text and edited date will also be updated.
         FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
-
-
+        prevParams = (ViewGroup.MarginLayoutParams) fab.getLayoutParams();
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fab.getLayoutParams();
+        params.bottomMargin = (int) getResources().getDimension(R.dimen._48sdp);
+        fab.setLayoutParams(params);
     }
 
     @Override
@@ -152,6 +156,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         super.onDetach();
 //        getActivity().setTitle("View Notes");
         mListener = null;
+        FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
+        fab.setLayoutParams(prevParams);
     }
 
     @Override

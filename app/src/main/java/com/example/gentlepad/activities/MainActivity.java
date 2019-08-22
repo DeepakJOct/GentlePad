@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     private String fontSize;
     private float selectedFontSize;
     private NotesListFragment notesListFragment;
+
 
 
     @SuppressLint("RestrictedApi")
@@ -199,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                 Prefs.putFloat(Constants.SELECTED_FONT_SIZE, selectedFontSize);
             }
         }
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabAddNew.getLayoutParams();
+        fabAddNew.setLayoutParams(params);
     }
 
     void startNewFragment(final android.support.v4.app.Fragment frag, final String tag, boolean backstack) {
@@ -283,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         if (savedNotesList != null) {
             this.findViewById(R.id.rl_no_notes).setVisibility(View.GONE);
         }
+
     }
 
 
