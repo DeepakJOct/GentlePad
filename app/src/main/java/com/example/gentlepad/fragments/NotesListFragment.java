@@ -147,11 +147,12 @@ public class NotesListFragment extends Fragment {
                 }
             }
         });
+
+        mListener.OnNotesListFragmentInteractionListener();
         FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         params = (ViewGroup.MarginLayoutParams) fab.getLayoutParams();
         fab.setLayoutParams(params);
-        mListener.OnNotesListFragmentInteractionListener();
     }
 
     private void setDataToAdapter(boolean isFromSort) {
