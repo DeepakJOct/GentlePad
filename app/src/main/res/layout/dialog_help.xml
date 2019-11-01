@@ -152,8 +152,6 @@
         android:textSize="@dimen/_12sdp"/>
 
 
-
-
     <!-- Buttons -->
 
     <LinearLayout

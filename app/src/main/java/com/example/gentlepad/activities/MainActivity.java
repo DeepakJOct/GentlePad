@@ -25,7 +25,9 @@ import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.dialogs.HelpDialogFragment;
+import com.example.gentlepad.dialogs.RateusDialogFragment;
 import com.example.gentlepad.dialogs.SortByDialogFragment;
+import com.example.gentlepad.dialogs.SupportDialogFragment;
 import com.example.gentlepad.fragments.AddNewNoteFragment;
 import com.example.gentlepad.fragments.NotesListFragment;
 import com.example.gentlepad.fragments.ViewNotesFragment;
@@ -133,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.support:
+                new SupportDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
+                break;
             case R.id.help:
                 new HelpDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
                 break;
@@ -153,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
                 /*Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivityForResult(intent, FONT_SELECT_REQUEST);*/
+                break;
+            case R.id.rate_us:
+                new RateusDialogFragment().show(getSupportFragmentManager(), "RateusDialogFragment");
                 break;
             case R.id.app_close:
 //                CommonUtils.showToastMessage(this, "Close");

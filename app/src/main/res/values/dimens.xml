@@ -6,4 +6,6 @@
     <dimen name="margin_notes_title">5dp</dimen>
     <dimen name="margin_notes_title_left">5dp</dimen>
     <dimen name="margin_notes_title_right">5dp</dimen>
+    <dimen name="toolbar_content_insets">10dp</dimen>
+
 </resources>

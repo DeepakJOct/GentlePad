@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/support"
+        android:icon="@drawable/ic_mail"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/help"
         android:icon="@drawable/ic_help"
         android:title=""
@@ -10,11 +16,15 @@
 
     <item
         android:id="@+id/view_change"
-        android:title="List/Grid" />
+        android:title="Switch to List/Grid" />
 
     <item
         android:id="@+id/menu_settings"
         android:title="Sort By" />
+
+    <item
+        android:id="@+id/rate_us"
+        android:title="Rate Us" />
 
     <item
         android:id="@+id/app_close"

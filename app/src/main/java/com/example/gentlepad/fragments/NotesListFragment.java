@@ -236,9 +236,9 @@ public class NotesListFragment extends Fragment {
         inflater.inflate(R.menu.menu, menu);
         boolean isListView = CommonUtils.getBoolean(getActivity(), Constants.LIST_VIEW);
         if (isListView) {
-            menu.getItem(1).setTitle("Switch to Grid");
+            menu.getItem(2).setTitle("Switch to Grid");
         } else {
-            menu.getItem(1).setTitle("Switch to List");
+            menu.getItem(2).setTitle("Switch to List");
         }
     }
 
@@ -258,7 +258,7 @@ public class NotesListFragment extends Fragment {
                 if (isAllNotesDeleted) {
                     CommonUtils.showToastMessage(getContext(), "Nothing to view");
                 } else {
-                    CommonUtils.showToastMessage(getContext(), isNotesViewAsList ? "List View" : "Grid View");
+//                    CommonUtils.showToastMessage(getContext(), isNotesViewAsList ? "List View" : "Grid View");
                 }
                 //remove this in the end
 //                CommonUtils.showToastMessage(getContext(), "isListView:" + isNotesViewAsList);
