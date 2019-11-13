@@ -23,8 +23,8 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_5sdp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_back"
+            android:foreground="?attr/selectableItemBackground"
+            app:srcCompat="@drawable/ic_back"
             android:visibility="gone" />
 
         <TextView
@@ -158,7 +158,7 @@
             android:layout_gravity="right"
             android:gravity="center"
             android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_cancel_red"
+            app:srcCompat="@drawable/ic_cancel_red"
             android:text="Ok"
             android:textSize="@dimen/_12sdp" />
 
@@ -170,7 +170,7 @@
             android:layout_marginLeft="@dimen/_25sdp"
             android:gravity="center"
             android:padding="@dimen/_3sdp"
-            android:src="@drawable/ic_tick_red"
+            app:srcCompat="@drawable/ic_tick_red"
             android:text="Ok"
             android:textSize="@dimen/_12sdp" />
         <!--<ImageButton

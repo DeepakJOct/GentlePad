@@ -1,11 +1,12 @@
 package com.example.gentlepad.dialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 
+import com.example.gentlepad.R;
 import com.example.gentlepad.listeners.DeleteItemListener;
 
 public class YesOrNoDialogFragment extends DialogFragment {
@@ -29,6 +30,7 @@ public class YesOrNoDialogFragment extends DialogFragment {
         String title = getArguments().getString("title");
         String message = getArguments().getString("message");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setIcon(getResources().getDrawable(R.drawable.ic_danger_alert));
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

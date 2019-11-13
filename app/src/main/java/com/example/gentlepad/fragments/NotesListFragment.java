@@ -193,25 +193,34 @@ public class NotesListFragment extends Fragment {
             //No option
 
         } else if (sortOption.equalsIgnoreCase(Constants.ASCENDING)) {
-
-            Collections.sort(savedNotesList, new Comparator<NoteItem>() {
-                @Override
-                public int compare(NoteItem noteItem, NoteItem t1) {
-                    return noteItem.getNotesTitle().compareTo(t1.getNotesTitle());
-                }
-            });
+            if (savedNotesList != null && savedNotesList.size() > 0) {
+                Collections.sort(savedNotesList, new Comparator<NoteItem>() {
+                    @Override
+                    public int compare(NoteItem noteItem, NoteItem t1) {
+                        return noteItem.getNotesTitle().compareTo(t1.getNotesTitle());
+                    }
+                });
+            } else {
+                CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
+            }
 
         } else if (sortOption.equalsIgnoreCase(Constants.DESCENDING)) {
-
-            Collections.reverse(savedNotesList);
+            if (savedNotesList != null && savedNotesList.size() > 0) {
+                Collections.reverse(savedNotesList);
+            } else {
+                CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
+            }
 
         } else if (sortOption.equalsIgnoreCase(Constants.DATE_MODIFIED)) {
-
-            Collections.sort(savedNotesList, new Comparator<NoteItem>() {
-                public int compare(NoteItem o1, NoteItem o2) {
-                    return o2.getDate().compareTo(o1.getDate());
-                }
-            });
+            if (savedNotesList != null && savedNotesList.size() > 0) {
+                Collections.sort(savedNotesList, new Comparator<NoteItem>() {
+                    public int compare(NoteItem o1, NoteItem o2) {
+                        return o2.getDate().compareTo(o1.getDate());
+                    }
+                });
+            } else {
+                CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
+            }
 
         }
         notesListAdapter.notifyDataSetChanged();
@@ -236,9 +245,10 @@ public class NotesListFragment extends Fragment {
         inflater.inflate(R.menu.menu, menu);
         boolean isListView = CommonUtils.getBoolean(getActivity(), Constants.LIST_VIEW);
         if (isListView) {
-            menu.getItem(2).setTitle("Switch to Grid");
+            menu.getItem(3).setIcon(getResources().getDrawable(R.drawable.ic_grid));
+
         } else {
-            menu.getItem(2).setTitle("Switch to List");
+            menu.getItem(3).setIcon(getResources().getDrawable(R.drawable.ic_list));
         }
     }
 
@@ -268,9 +278,11 @@ public class NotesListFragment extends Fragment {
                     //tell the adapter that view has changed
                     notesListAdapter.notifyDataSetChanged();
                     if (isNotesViewAsList) {
-                        item.setTitle("Switch to Grid");
+//                        item.setTitle("Switch to Grid");
+                        item.setIcon(getResources().getDrawable(R.drawable.ic_grid));
                     } else {
-                        item.setTitle("Switch to List");
+//                        item.setTitle("Switch to List");
+                        item.setIcon(getResources().getDrawable(R.drawable.ic_list));
                     }
                 } else {
                     CommonUtils.showToastMessage(getContext(), "Nothing to view. Click (+) button to add notes.");

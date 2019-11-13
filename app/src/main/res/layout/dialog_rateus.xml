@@ -59,7 +59,7 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
             android:padding="@dimen/_10sdp"
-            android:src="@drawable/ic_rate_us"
+            app:srcCompat="@drawable/ic_rate_us"
             android:text="Ok"
             android:textSize="@dimen/_12sdp" />
 

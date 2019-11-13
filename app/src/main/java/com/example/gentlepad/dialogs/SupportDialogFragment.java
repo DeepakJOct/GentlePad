@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import com.example.gentlepad.R;
 
 import butterknife.BindView;
@@ -23,19 +24,15 @@ import butterknife.ButterKnife;
 @SuppressLint("ValidFragment")
 public class SupportDialogFragment extends DialogFragment implements View.OnClickListener {
 
-
-
     public SupportDialogFragment() {
 
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
 
     @Nullable
     @Override

@@ -47,7 +47,7 @@
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
                 android:rotation="180"
-                android:src="@drawable/ic_arrow" />
+                app:srcCompat="@drawable/ic_arrow" />
 
         </LinearLayout>
     </LinearLayout>
@@ -92,7 +92,7 @@
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
                 android:rotation="180"
-                android:src="@drawable/ic_arrow" />
+                app:srcCompat="@drawable/ic_arrow" />
 
         </LinearLayout>
     </LinearLayout>

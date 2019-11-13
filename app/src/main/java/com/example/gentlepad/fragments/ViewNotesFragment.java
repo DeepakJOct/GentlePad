@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,24 +16,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toolbar;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
-import com.example.gentlepad.dialogs.HelpDialogFragment;
 import com.example.gentlepad.models.NoteItem;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -209,9 +202,11 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onTextChanged(CharSequence editedNotesTitle, int start, int before, int count) {
-                newNotesTitle = etNotesTitle.getText().toString();
-                noteItemsArray[0] = newNotesTitle;
-                isTitleChanged = true;
+                if (etNotesTitle.getText().toString() != null) {
+                    newNotesTitle = etNotesTitle.getText().toString();
+                    noteItemsArray[0] = newNotesTitle;
+                    isTitleChanged = true;
+                }
             }
 
             @Override
@@ -228,9 +223,11 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onTextChanged(CharSequence editedNotesDesc, int start, int before, int count) {
-                newNotesDesc = etNotesDesc.getText().toString();
-                noteItemsArray[1] = newNotesDesc;
-                isDescChanged = true;
+                if (etNotesDesc.getText().toString() != null) {
+                    newNotesDesc = etNotesDesc.getText().toString();
+                    noteItemsArray[1] = newNotesDesc;
+                    isDescChanged = true;
+                }
             }
 
             @Override

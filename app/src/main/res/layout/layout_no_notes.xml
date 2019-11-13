@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_no_notes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
             android:layout_height="@dimen/_125sdp"
             android:layout_centerHorizontal="true"
             android:alpha="0.4"
-            android:src="@drawable/ic_gentlepad_splash" />
+            app:srcCompat="@drawable/ic_gentlepad_splash" />
 
         <TextView
             android:id="@+id/tv_no_notes"
@@ -24,8 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_app_icon"
             android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="You haven't added any notes yet."
+            android:text="@string/you_haven_t_added_any_notes_yet"
             android:textColor="@color/background_light_red"
             android:textSize="@dimen/_14sdp" />
 
