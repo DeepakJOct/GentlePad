@@ -12,4 +12,6 @@ public interface Constants {
     String ASCENDING = "Sort (A - Z)";
     String DESCENDING = "Sort (Z - A)";
     String DATE_MODIFIED = "Date Modified";
+    String SAVED_SORT_OPTION = "saved_sort_option";
+    String IS_SORTED = "is_sorted";
 }

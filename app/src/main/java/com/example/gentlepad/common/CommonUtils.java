@@ -39,6 +39,14 @@ public class CommonUtils {
         return formattedDate;
     }
 
+    public static String getDateFormatted() {
+        Date date = Calendar.getInstance().getTime();
+        String pattern = "YYYY-MM-dd hh:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String formattedDate = sdf.format(date);
+        return formattedDate;
+    }
+
     public static void setFont(Context context, TextView textView) {
         Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/Satisfy-Regular.ttf");
         textView.setTypeface(font);

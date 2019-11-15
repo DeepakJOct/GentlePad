@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     private NotesListFragment notesListFragment;
 
 
-
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +146,14 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                     public void getResult(Object object, boolean isSuccess) {
                         if (isSuccess) {
                             String option = (String) object;
-                            if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
-                                NotesListFragment f = (NotesListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-                                f.sortNotesBy(option);
+                            if (option != null) {
+                                if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
+                                    NotesListFragment f = (NotesListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                                    f.sortNotesBy(option);
+                                    Prefs.putString(Constants.SAVED_SORT_OPTION, option);
+                                    Prefs.putBoolean(Constants.IS_SORTED, true);
+                                    Log.d("MainActivity", "sortResult--->sortOption--> " + option);
+                                }
                             }
 //                            Toast.makeText(MainActivity.this, "Option: " + option, Toast.LENGTH_SHORT).show();
                         }
@@ -266,7 +270,15 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
 
     public ArrayList<NoteItem> getDataFromDb() {
         db = new DatabaseHelper(this);
-        Cursor res = db.getAllData();
+        Cursor res;
+        if (Prefs.getBoolean(Constants.IS_SORTED, false)
+                && Prefs.getString(Constants.SAVED_SORT_OPTION, "") != null) {
+            Log.d("MainActivity", "getDataFromDb--->isSorted--> " + Prefs.getBoolean(Constants.IS_SORTED, false));
+            Log.d("MainActivity", "getDataFromDb--->isSorted--> " + Prefs.getString(Constants.SAVED_SORT_OPTION, ""));
+            res = db.orderBy(Prefs.getString(Constants.SAVED_SORT_OPTION, ""));
+        } else {
+            res = db.orderBy(Prefs.getString(Constants.SAVED_SORT_OPTION, ""));
+        }
         if (res.getCount() == 0) {
             return null;
         }

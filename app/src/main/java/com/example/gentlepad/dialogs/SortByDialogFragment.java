@@ -119,18 +119,22 @@ public class SortByDialogFragment extends DialogFragment implements View.OnClick
             switch (option) {
                 case 1:
                     sortOption = chkBtn1.getText().toString();
+                    chkBtn1.setChecked(true);
                     onResultListener.getResult(sortOption, true);
                     break;
                 case 2:
                     sortOption = chkBtn2.getText().toString();
+                    chkBtn2.setChecked(true);
                     onResultListener.getResult(sortOption, true);
                     break;
                 case 3:
                     sortOption = chkBtn3.getText().toString();
+                    chkBtn3.setChecked(true);
                     onResultListener.getResult(sortOption, true);
                     break;
                 case 4:
                     sortOption = chkBtn4.getText().toString();
+                    chkBtn4.setChecked(true);
                     onResultListener.getResult(sortOption, true);
                     break;
             }
