@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
                             if(getSupportFragmentManager().findFragmentById(R.id.container) instanceof NotesListFragment) {
                                 NotesListFragment f = (NotesListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
                                 f.sortNotesBy(option);
+                                Prefs.putString(Constants.SORT_OPTION, option);
                             }
 //                            Toast.makeText(MainActivity.this, "Option: " + option, Toast.LENGTH_SHORT).show();
                         }

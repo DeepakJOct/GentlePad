@@ -16,4 +16,7 @@
     <string name="settings">Settings</string>
     <string name="you_haven_t_added_any_notes_yet">Welcome to Gentlepad. \n\nGentlepad helps to add notes and save it without hassles. Quickly write and save important notes and access it offline. \n \nClick (+) to add new note.</string>
     <string name="could_note_sort_no_notes">Could not sort. No notes found.</string>
+    <string name="sort_a_z">Sort A - Z</string>
+    <string name="sort_z_a">Sort Z - A</string>
+    <string name="date_modified">Date Modified</string>
 </resources>

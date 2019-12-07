@@ -66,14 +66,16 @@ public class NotesListFragment extends Fragment {
 
     private OnNotesListFragmentInteractionListener mListener;
     private float selectedFontSize;
+    private int savedNotesListSize;
+    private boolean isDataInserted;
 
     public NotesListFragment() {
         // Required empty public constructor
     }
 
-    public static NotesListFragment newInstance(float selectedFontSize) {
+    public static NotesListFragment newInstance(boolean isDataInserted) {
         NotesListFragment fragment = new NotesListFragment();
-        fragment.selectedFontSize = selectedFontSize;
+        fragment.isDataInserted = isDataInserted;
         return fragment;
     }
 
@@ -102,6 +104,8 @@ public class NotesListFragment extends Fragment {
         setHasOptionsMenu(true);
         isNotesViewAsList = CommonUtils.getBoolean(getContext(), Constants.LIST_VIEW);
         savedNotesList = getDataFromDb();
+        //Get notes list size to check new added item
+        savedNotesListSize = savedNotesList.size();
         rcvNotes = view.findViewById(R.id.rcv_notes);
         rlNoNotes = view.findViewById(R.id.rl_no_notes);
         tvNoNotes = view.findViewById(R.id.tv_no_notes);
@@ -155,6 +159,7 @@ public class NotesListFragment extends Fragment {
         fab.setLayoutParams(params);
     }
 
+
     private void setDataToAdapter(boolean isFromSort) {
         if (savedNotesList != null) {
             //if not from sort the default list will be reversed & served
@@ -194,30 +199,40 @@ public class NotesListFragment extends Fragment {
 
         } else if (sortOption.equalsIgnoreCase(Constants.ASCENDING)) {
             if (savedNotesList != null && savedNotesList.size() > 0) {
-                Collections.sort(savedNotesList, new Comparator<NoteItem>() {
+//                db.orderNotes(sortOption);
+                savedNotesList.clear();
+                savedNotesList = getDataFromDbOrdered(sortOption);
+                /*Collections.sort(savedNotesList, new Comparator<NoteItem>() {
                     @Override
                     public int compare(NoteItem noteItem, NoteItem t1) {
-                        return noteItem.getNotesTitle().compareTo(t1.getNotesTitle());
+                        //return noteItem.getNotesTitle().compareTo(t1.getNotesTitle());
+                        return 0;
                     }
-                });
+                });*/
             } else {
                 CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
             }
 
         } else if (sortOption.equalsIgnoreCase(Constants.DESCENDING)) {
             if (savedNotesList != null && savedNotesList.size() > 0) {
-                Collections.reverse(savedNotesList);
+//                db.orderNotes(sortOption);
+                savedNotesList.clear();
+                savedNotesList = getDataFromDbOrdered(sortOption);
+                //Collections.reverse(savedNotesList);
             } else {
                 CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
             }
 
         } else if (sortOption.equalsIgnoreCase(Constants.DATE_MODIFIED)) {
             if (savedNotesList != null && savedNotesList.size() > 0) {
-                Collections.sort(savedNotesList, new Comparator<NoteItem>() {
+//                db.orderNotes(sortOption);
+                savedNotesList.clear();
+                savedNotesList = getDataFromDbOrdered(sortOption);
+                /*Collections.sort(savedNotesList, new Comparator<NoteItem>() {
                     public int compare(NoteItem o1, NoteItem o2) {
                         return o2.getDate().compareTo(o1.getDate());
                     }
-                });
+                });*/
             } else {
                 CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
             }
@@ -299,11 +314,16 @@ public class NotesListFragment extends Fragment {
         /*
          * to refresh the list whenever a new item is added in the db
          * */
-        if (savedNotesList != null) {
+        if (savedNotesList != null && savedNotesList.size() > 0) {
             savedNotesList.clear();
-            savedNotesList = getDataFromDb();
+            if (Prefs.getString(Constants.SORT_OPTION, "") != null) {
+                savedNotesList = getDataFromDbOrdered(Prefs.getString(Constants.SORT_OPTION, ""));
+            } else {
+                savedNotesList = getDataFromDb();
+            }
             isNotesViewAsList = CommonUtils.getBoolean(getContext(), Constants.LIST_VIEW);
             showListOrGrid();
+//            sortListOnNewItemAdded();
             setDataToAdapter(false);
             notesListAdapter.notifyDataSetChanged();
         } else {
@@ -317,6 +337,16 @@ public class NotesListFragment extends Fragment {
 
     }
 
+    private void sortListOnNewItemAdded() {
+        if (savedNotesList.size() > 1 && isDataInserted) {
+            if (Prefs.getString(Constants.SORT_OPTION, "") != null) {
+                String sortOption = Prefs.getString(Constants.SORT_OPTION, "");
+                CommonUtils.showToastMessage(getContext(), "New Item Added. Sorting to--> " + sortOption);
+                sortNotesBy(sortOption);
+            }
+        }
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -326,6 +356,26 @@ public class NotesListFragment extends Fragment {
     public ArrayList<NoteItem> getDataFromDb() {
         db = new DatabaseHelper(getContext());
         Cursor res = db.getAllData();
+        if (res.getCount() == 0) {
+            return null;
+        }
+        if (res.moveToFirst()) {
+            while (!res.isAfterLast()) {
+                item = new NoteItem(res.getString(res.getColumnIndex("NOTES_TITLE")),
+                        res.getString(res.getColumnIndex("NOTES_DESC")),
+                        res.getString(res.getColumnIndex("DATE")));
+                savedNotesList.add(item);
+                res.moveToNext();
+            }
+        }
+        Log.d("ArrayListFromDb--> ", " " + savedNotesList.get(0));
+        res.close();
+        return savedNotesList;
+    }
+
+    public ArrayList<NoteItem> getDataFromDbOrdered(String sortOption) {
+        db = new DatabaseHelper(getContext());
+        Cursor res = db.orderNotes(sortOption);
         if (res.getCount() == 0) {
             return null;
         }

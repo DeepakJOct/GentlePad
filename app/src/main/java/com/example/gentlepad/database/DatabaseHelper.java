@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.models.NoteItem;
 
@@ -25,9 +26,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATA_TYPE_3 = "int(20)";
     public static final String DATA_TYPE_4 = "char(64)";
 
+    private Context context;
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.context = context;
         SQLiteDatabase db = this.getReadableDatabase();
     }
 
@@ -106,6 +110,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteNotes(String noteTitle) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, COL_2 + "=?", new String[]{noteTitle}) > 0;
+    }
+
+    public Cursor orderNotes(String sortBy) {
+
+        String sort = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = null;
+        if (sortBy != null) {
+            if (sortBy.equalsIgnoreCase(Constants.ASCENDING)) {
+                sort = "ASC";
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " ASC", new String[] {});
+                if(c != null) {
+                    CommonUtils.showToastMessage(context, "Sorting with cursor--> " + c.toString());
+                }
+            } else if (sortBy.equalsIgnoreCase(Constants.DESCENDING)) {
+                sort = "DESC";
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " DESC", new String[] {});
+                if(c != null) {
+                    CommonUtils.showToastMessage(context, "Sorting with cursor--> " + c.toString());
+                }
+            } else if (sortBy.equalsIgnoreCase(Constants.DATE_MODIFIED)) {
+                sort = "datetime";
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY date(" + COL_4 +") " + " DESC", new String[] {});
+                if(c != null) {
+                    CommonUtils.showToastMessage(context, "Sorting with cursor--> " + c.toString());
+                }
+            }
+        }
+        return c;
     }
 
 }
