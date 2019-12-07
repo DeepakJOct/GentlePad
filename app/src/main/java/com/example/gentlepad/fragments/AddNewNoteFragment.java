@@ -161,7 +161,7 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
                 saveNotes(getContext(), nTitle, nDesc, nDate);
             }
             if (isDataInserted) {
-                startNewFragment(NotesListFragment.newInstance(isDataInserted), "NotesListFragment", true);
+                startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", true);
             }
         }
     }

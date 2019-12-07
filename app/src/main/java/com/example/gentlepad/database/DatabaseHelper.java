@@ -12,6 +12,10 @@ import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.models.NoteItem;
 
+import java.util.logging.Logger;
+
+import static android.icu.text.MessagePattern.ArgType.SELECT;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Main.db";
@@ -20,18 +24,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2 = "NOTES_TITLE";
     public static final String COL_3 = "NOTES_DESC";
     public static final String COL_4 = "DATE";
+    public static final String COL_5 = "REAL_DATE";
     //data types
     public static final String DATA_TYPE_1 = "INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String DATA_TYPE_2 = "varchar(200)";
     public static final String DATA_TYPE_3 = "int(20)";
     public static final String DATA_TYPE_4 = "char(64)";
-
-    private Context context;
+    public static final String DATA_TYPE_5 = "text";
 
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-        this.context = context;
         SQLiteDatabase db = this.getReadableDatabase();
     }
 
@@ -40,7 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + COL_1 + " " + DATA_TYPE_1 + ", " +
                 COL_2 + " " + DATA_TYPE_2 + ", " +
                 COL_3 + " " + DATA_TYPE_2 + ", " +
-                COL_4 + " " + DATA_TYPE_2 + ")");
+                COL_4 + " " + DATA_TYPE_2 + ", " +
+                COL_5 + " " + DATA_TYPE_5 + ")");
 
     }
 
@@ -56,6 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, notesTitle);
         contentValues.put(COL_3, notesDesc);
         contentValues.put(COL_4, date);
+        contentValues.put(COL_5, CommonUtils.getDateFormatted());
         long rowInserted = db.insert(TABLE_NAME, null, contentValues);
         db.close();
         if (rowInserted != -1) {
@@ -112,33 +117,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME, COL_2 + "=?", new String[]{noteTitle}) > 0;
     }
 
-    public Cursor orderNotes(String sortBy) {
-
-        String sort = "";
+    public Cursor orderBy(String sortOption) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor c = null;
-        if (sortBy != null) {
-            if (sortBy.equalsIgnoreCase(Constants.ASCENDING)) {
-                sort = "ASC";
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " ASC", new String[] {});
-                if(c != null) {
-                    CommonUtils.showToastMessage(context, "Sorting with cursor--> " + c.toString());
-                }
-            } else if (sortBy.equalsIgnoreCase(Constants.DESCENDING)) {
-                sort = "DESC";
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " DESC", new String[] {});
-                if(c != null) {
-                    CommonUtils.showToastMessage(context, "Sorting with cursor--> " + c.toString());
-                }
-            } else if (sortBy.equalsIgnoreCase(Constants.DATE_MODIFIED)) {
-                sort = "datetime";
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY date(" + COL_4 +") " + " DESC", new String[] {});
-                if(c != null) {
-                    CommonUtils.showToastMessage(context, "Sorting with cursor--> " + c.toString());
-                }
-            }
+        Log.d("DatabaseHelper", "orderBy--->sortOption--> " + sortOption);
+        if (sortOption.equalsIgnoreCase(Constants.ASCENDING)) {
+            Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " ASC", null);
+            Log.d("DatabaseHelper", "orderBy--->check_c_null--> " + c.getColumnName(0));
+            return c;
+        } else if (sortOption.equalsIgnoreCase(Constants.DESCENDING)) {
+            Cursor c  = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_2 + " DESC", null);
+            Log.d("DatabaseHelper", "orderBy--->check_c_null--> " + c.getColumnName(0));
+            return c;
+        } else if (sortOption.equalsIgnoreCase(Constants.DATE_MODIFIED)) {
+            Cursor c  = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY datetime(" + COL_5 + ") DESC", null);
+            Log.d("DatabaseHelper", "orderBy--->check_c_null--> " + c.getColumnName(0));
+            return c;
+        } else {
+            Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+            return res;
         }
-        return c;
     }
 
 }
