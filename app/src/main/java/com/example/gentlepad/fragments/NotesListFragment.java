@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.GridLayoutAnimationController;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +39,15 @@ import com.example.gentlepad.dialogs.SortByDialogFragment;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,7 +65,7 @@ public class NotesListFragment extends Fragment {
     TextView tvNoNotes;
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
     DatabaseHelper db;
-    RelativeLayout rlNoNotes;
+    RelativeLayout rlNoNotes, rlAllNotes;
     boolean isNotesViewAsList = false;
     LinearLayoutManager linearLayoutManager;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -104,10 +114,11 @@ public class NotesListFragment extends Fragment {
         /*if (Prefs.getBoolean(Constants.IS_SORTED, false) && Prefs.getString(Constants.SAVED_SORT_OPTION, "") != null) {
             savedNotesList = getDataFromDbSorted(Prefs.getString(Constants.SAVED_SORT_OPTION, ""));
         } else {*/
-            savedNotesList = getDataFromDb();
+        savedNotesList = getDataFromDb();
 //        }
         rcvNotes = view.findViewById(R.id.rcv_notes);
         rlNoNotes = view.findViewById(R.id.rl_no_notes);
+        rlAllNotes = view.findViewById(R.id.rl_notes);
         tvNoNotes = view.findViewById(R.id.tv_no_notes);
 
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -153,10 +164,37 @@ public class NotesListFragment extends Fragment {
         });
 
         mListener.OnNotesListFragmentInteractionListener();
-        FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
+        final FloatingActionButton fab = getActivity().getWindow().findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         params = (ViewGroup.MarginLayoutParams) fab.getLayoutParams();
         fab.setLayoutParams(params);
+
+        rcvNotes.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, final int newState) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                fab.show();
+                            }
+                        }
+                    }, 2200);
+
+//                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 || dy < 0 && fab.isShown()) {
+                    fab.hide();
+                }
+            }
+        });
+
     }
 
     private void setDataToAdapter(boolean isFromSort) {
@@ -165,10 +203,12 @@ public class NotesListFragment extends Fragment {
             //else after sorting recyclerview will get sorted
             if (isFromSort) {
                 notesListAdapter.setList(savedNotesList);
+                notesListAdapter.setTimeForNotesAddedToday();
                 rcvNotes.setAdapter(notesListAdapter);
             } else {
 //                Collections.reverse(savedNotesList);
                 notesListAdapter.setList(savedNotesList);
+                notesListAdapter.setTimeForNotesAddedToday();
                 rcvNotes.setAdapter(notesListAdapter);
             }
         }
@@ -180,11 +220,16 @@ public class NotesListFragment extends Fragment {
             StaggeredGridLayoutManager mGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             /*Collections.reverse(savedNotesList);*/
             rcvNotes.setLayoutManager(mGridLayoutManager);
+//            final GridLayoutAnimationController gridAnimationController = new GridLayoutAnimationController();
+            TransitionManager.beginDelayedTransition(rcvNotes);
+            mGridLayoutManager.setSpanCount(2);
+            notesListAdapter.notifyDataSetChanged();
         } else {
             LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
             /*linearLayoutManager.setReverseLayout(true);
             linearLayoutManager.setStackFromEnd(true);*/
             rcvNotes.setLayoutManager(mLinearLayoutManager);
+            TransitionManager.beginDelayedTransition(rcvNotes);
         }
         notesListAdapter.changeView(isNotesViewAsList);
         rcvNotes.setAdapter(notesListAdapter);
@@ -233,7 +278,35 @@ public class NotesListFragment extends Fragment {
             }
 
         }
+        setTimeForNotesAddedToday();
         notesListAdapter.notifyDataSetChanged();
+    }
+
+    public void setTimeForNotesAddedToday() {
+        @SuppressLint("SimpleDateFormat")
+        DateFormat parser = new SimpleDateFormat("dd MMM yyyy hh:mm a");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat timeParser = new SimpleDateFormat("dd MMM yyyy hh:mm a");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
+        for(NoteItem n : savedNotesList) {
+            try {
+                Date convertedDate = parser.parse(n.getDate());
+                String notesDate_ddMMyyyy = formatter.format(convertedDate);
+                Date todayDate = parser.parse(CommonUtils.getDate());
+                String todaysDate_ddMMyyyy = formatter.format(todayDate);
+
+                Date toTime = timeParser.parse(n.getDate());
+                String todaysTime = timeFormatter.format(toTime);
+                if(notesDate_ddMMyyyy.equals(todaysDate_ddMMyyyy)) {
+                    n.setDate(todaysTime);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

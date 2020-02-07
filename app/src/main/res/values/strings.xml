@@ -4,8 +4,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="enter_title">Enter title</string>
-    <string name="enter_notes_description">Enter notes description</string>
+    <string name="enter_title">Title</string>
+    <string name="enter_notes_description">Description</string>
     <string name="btn_text_cancel">Cancel</string>
     <string name="btn_text_save">Save</string>
     <string name="btn_text_back">Back</string>
@@ -14,6 +14,6 @@
     <string name="dummy_date">24 June 2019 09:49 PM</string>
     <string name="add_new_notes">Add new note</string>
     <string name="settings">Settings</string>
-    <string name="you_haven_t_added_any_notes_yet">Welcome to Gentlepad. \n\nGentlepad helps to add notes and save it without hassles. Quickly write and save important notes and access it offline. \n \nClick (+) to add new note.</string>
+    <string name="you_haven_t_added_any_notes_yet">Welcome to Gentlepad. \n\nQuickly write and save important notes and access it offline. \n \nClick (+) to add new note.</string>
     <string name="could_note_sort_no_notes">Could not sort. No notes found.</string>
 </resources>

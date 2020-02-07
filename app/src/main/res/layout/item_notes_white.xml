@@ -9,12 +9,12 @@
     android:layout_marginBottom="@dimen/_4sdp"
     android:clipToPadding="true"
     app:cardCornerRadius="@dimen/_4sdp"
-    android:backgroundTint="@color/background_light_red"
     app:cardElevation="@dimen/_2sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/card_back"
         android:orientation="vertical">
 
         <LinearLayout
@@ -51,8 +51,8 @@
                     android:layout_height="@dimen/_18sdp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/_2sdp"
-                    android:padding="@dimen/_1sdp"
-                    app:srcCompat="@drawable/ic_del" />
+                    android:padding="@dimen/_2sdp"
+                    app:srcCompat="@drawable/ic_delete" />
             </LinearLayout>
 
 

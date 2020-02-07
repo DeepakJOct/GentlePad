@@ -85,7 +85,9 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         if (!TextUtils.isEmpty(etNotesDesc.getText().toString())) {
             nDesc = etNotesDesc.getText().toString();
         }
+
         nDate = CommonUtils.getDate();
+
         getActivity().getWindow().findViewById(R.id.fab).setVisibility(View.INVISIBLE);
 
         view.setFocusableInTouchMode(true);

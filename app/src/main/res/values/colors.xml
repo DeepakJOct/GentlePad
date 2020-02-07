@@ -16,7 +16,8 @@
 
     <color name="title_blue">#4286f4</color>
     <color name="background_light_red">#ff6659</color>
-    <color name="text_color">#f7f9f9</color>
+    <!--<color name="text_color">#f7f9f9</color>-->
+    <color name="text_color">#ffffff</color>
     <color name="rate_us">#FFBB01</color>
 
 </resources>

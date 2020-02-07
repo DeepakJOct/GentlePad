@@ -1,5 +1,6 @@
 package com.example.gentlepad.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +28,12 @@ import com.example.gentlepad.listeners.OnClickResultListener;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.SavedNotesViewHolder> {
 
@@ -38,6 +46,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     private OnResultListener onResultListener;
     private boolean isNotesViewAsList;
     private LayoutInflater layoutInflater;
+    private int lastPosition = -1;
+
+    public NotesListAdapter() {
+
+    }
 
     public NotesListAdapter(Context context, boolean isListView) {
         this.context = context;
@@ -47,6 +60,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
     public void setList(ArrayList<NoteItem> mNotesList) {
         this.savedNotesList = mNotesList;
+        setTimeForNotesAddedToday();
 
     }
 
@@ -117,7 +131,6 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
             holder.tvNotesDesc.setText("No Description");
         }
 
-
     }
 
     public void changeView(boolean isNotesViewShowing) {
@@ -144,6 +157,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     class SavedNotesViewHolder extends RecyclerView.ViewHolder {
         TextView tvNotesTitleItem, tvNotesDesc, tvNotesDate;
         ImageView ivDelete;
+
 
         public SavedNotesViewHolder(View itemView) {
             super(itemView);
@@ -176,6 +190,39 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
             });
 
         }
+    }
+
+    public void setTimeForNotesAddedToday() {
+        @SuppressLint("SimpleDateFormat")
+        DateFormat parser = new SimpleDateFormat("dd MMM yyyy hh:mm a");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat formatter = new SimpleDateFormat("dd MM yyyy");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat timeParser = new SimpleDateFormat("dd MMM yyyy hh:mm a");
+        @SuppressLint("SimpleDateFormat")
+        DateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
+        for(NoteItem n : savedNotesList) {
+            try {
+                Date convertedDate = parser.parse(n.getDate());
+                String notesDate_ddMMyyyy = formatter.format(convertedDate);
+                Date todayDate = parser.parse(CommonUtils.getDate());
+                String todaysDate_ddMMyyyy = formatter.format(todayDate);
+
+                Date toTime = timeParser.parse(n.getDate());
+                String todaysTime = timeFormatter.format(toTime);
+                if(notesDate_ddMMyyyy.equals(todaysDate_ddMMyyyy)) {
+                    n.setDate(todaysTime);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void getTimePattern() {
+        String pattern = "^(1[0-2]|0?[1-9]):[0-5][0-9] (AM|PM)$";
+        //compile the regex using Patter.compile
+
     }
 
     public NoteItem getItemDataFromDb(String itemNotesTitle) {

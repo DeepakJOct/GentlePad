@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.Utilities.Prefs;
+import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.dialogs.HelpDialogFragment;
@@ -33,6 +34,7 @@ import com.example.gentlepad.fragments.NotesListFragment;
 import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
+import com.example.gentlepad.views.MovableFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     ArrayList<NoteItem> savedNotesList = new ArrayList<>();
     RelativeLayout rlNoNotes;
     TextView tvNoNotes;
-    FloatingActionButton fabAddNew;
+    MovableFloatingActionButton fabAddNew;
     List<Fragment> fragmentsBackstackList;
     boolean isListViewChanged;
     String fragmentTag;
