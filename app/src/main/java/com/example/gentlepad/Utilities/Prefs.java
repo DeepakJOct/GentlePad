@@ -19,6 +19,7 @@ import java.util.Set;
 public class Prefs {
 
 
+    public static final String IS_SWIPE_FIRST_TIME = "isSwipeFirstTime";
     /**
      * Initialize the Prefs helper class to keep a reference to the
      * SharedPreference for this application the SharedPreference will use the

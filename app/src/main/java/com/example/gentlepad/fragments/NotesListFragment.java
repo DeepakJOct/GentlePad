@@ -76,6 +76,7 @@ public class NotesListFragment extends Fragment {
 
     private OnNotesListFragmentInteractionListener mListener;
     private float selectedFontSize;
+    private boolean isBtnclick;
 
     public NotesListFragment() {
         // Required empty public constructor
@@ -221,7 +222,9 @@ public class NotesListFragment extends Fragment {
             /*Collections.reverse(savedNotesList);*/
             rcvNotes.setLayoutManager(mGridLayoutManager);
 //            final GridLayoutAnimationController gridAnimationController = new GridLayoutAnimationController();
-            TransitionManager.beginDelayedTransition(rcvNotes);
+            if(isBtnclick) {
+                TransitionManager.beginDelayedTransition(rcvNotes);
+            }
             mGridLayoutManager.setSpanCount(2);
             notesListAdapter.notifyDataSetChanged();
         } else {
@@ -229,10 +232,13 @@ public class NotesListFragment extends Fragment {
             /*linearLayoutManager.setReverseLayout(true);
             linearLayoutManager.setStackFromEnd(true);*/
             rcvNotes.setLayoutManager(mLinearLayoutManager);
-            TransitionManager.beginDelayedTransition(rcvNotes);
+            if(isBtnclick) {
+                TransitionManager.beginDelayedTransition(rcvNotes);
+            }
         }
         notesListAdapter.changeView(isNotesViewAsList);
         rcvNotes.setAdapter(notesListAdapter);
+        isBtnclick = false;
     }
 
     public void sortNotesBy(String sortOption) {
@@ -245,6 +251,10 @@ public class NotesListFragment extends Fragment {
             if (savedNotesList != null && savedNotesList.size() > 0) {
                 savedNotesList.clear();
                 savedNotesList = getDataFromDbSorted(sortOption);
+
+                for (NoteItem n : savedNotesList) {
+                    Log.d("Frag--> " + "title--> ", n.getNotesTitle());
+                }
                 /*Collections.sort(savedNotesList, new Comparator<NoteItem>() {
                     @Override
                     public int compare(NoteItem noteItem, NoteItem t1) {
@@ -260,6 +270,9 @@ public class NotesListFragment extends Fragment {
 //                Collections.reverse(savedNotesList);
                 savedNotesList.clear();
                 savedNotesList = getDataFromDbSorted(sortOption);
+                for (NoteItem n : savedNotesList) {
+                    Log.d("Frag--> " + "title--> ", n.getNotesTitle());
+                }
             } else {
                 CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
             }
@@ -268,6 +281,9 @@ public class NotesListFragment extends Fragment {
             if (savedNotesList != null && savedNotesList.size() > 0) {
                 savedNotesList.clear();
                 savedNotesList = getDataFromDbSorted(sortOption);
+                for (NoteItem n : savedNotesList) {
+                    Log.d("Frag--> " + "title--> ", n.getNotesTitle());
+                }
                 /*Collections.sort(savedNotesList, new Comparator<NoteItem>() {
                     public int compare(NoteItem o1, NoteItem o2) {
                         return o2.getDate().compareTo(o1.getDate());
@@ -346,6 +362,7 @@ public class NotesListFragment extends Fragment {
                 new HelpDialogFragment().show(getFragmentManager(), "HelpDialogFragment");
                 break;*/
             case R.id.view_change:
+                isBtnclick = true;
                 isNotesViewAsList = !isNotesViewAsList;
                 CommonUtils.saveBoolean(getContext(), Constants.LIST_VIEW, isNotesViewAsList);
                 if (isAllNotesDeleted) {

@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         } else {
             fabAddNew.setVisibility(View.VISIBLE);
         }
+        Prefs.putBoolean(Prefs.IS_SWIPE_FIRST_TIME, true);
 
     }
 

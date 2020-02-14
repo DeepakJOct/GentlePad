@@ -18,19 +18,19 @@ import static android.icu.text.MessagePattern.ArgType.SELECT;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "Main.db";
-    public static final String TABLE_NAME = "saved_notes";
-    public static final String COL_1 = "ID";
-    public static final String COL_2 = "NOTES_TITLE";
-    public static final String COL_3 = "NOTES_DESC";
-    public static final String COL_4 = "DATE";
-    public static final String COL_5 = "REAL_DATE";
+    private static final String DATABASE_NAME = "Main.db";
+    private static final String TABLE_NAME = "saved_notes";
+    private static final String COL_1 = "ID";
+    private static final String COL_2 = "NOTES_TITLE";
+    private static final String COL_3 = "NOTES_DESC";
+    private static final String COL_4 = "DATE";
+    private static final String COL_5 = "REAL_DATE";
     //data types
-    public static final String DATA_TYPE_1 = "INTEGER PRIMARY KEY AUTOINCREMENT";
-    public static final String DATA_TYPE_2 = "varchar(200)";
+    private static final String DATA_TYPE_1 = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String DATA_TYPE_2 = "varchar(200)";
     public static final String DATA_TYPE_3 = "int(20)";
     public static final String DATA_TYPE_4 = "char(64)";
-    public static final String DATA_TYPE_5 = "text";
+    private static final String DATA_TYPE_5 = "text";
 
 
     public DatabaseHelper(Context context) {
@@ -64,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long rowInserted = db.insert(TABLE_NAME, null, contentValues);
         db.close();
         if (rowInserted != -1) {
-            CommonUtils.showToastMessage(context, "Saved");
+//            CommonUtils.showToastMessage(context, "Saved");
             return true;
         } else {
             CommonUtils.showToastMessage(context, "Error");

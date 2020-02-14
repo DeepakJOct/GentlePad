@@ -17,7 +17,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_47sdp"
-            android:background="@color/background_light_red"
+            android:background="@drawable/btn_background"
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
 

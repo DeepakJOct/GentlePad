@@ -9,22 +9,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.gentlepad.R;
+import com.example.gentlepad.Utilities.Prefs;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.dialogs.YesOrNoDialogFragment;
 import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.listeners.DeleteItemListener;
-import com.example.gentlepad.listeners.OnClickResultListener;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 
@@ -33,7 +32,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Pattern;
+
+import android.os.Handler;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.SavedNotesViewHolder> {
 
@@ -47,6 +47,8 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     private boolean isNotesViewAsList;
     private LayoutInflater layoutInflater;
     private int lastPosition = -1;
+    ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+
 
     public NotesListAdapter() {
 
@@ -80,7 +82,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         }*/
 
         return new SavedNotesViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(isNotesViewAsList ? R.layout.item_notes : R.layout.item_notes_grid, parent, false));
+                .inflate(isNotesViewAsList ? R.layout.item_notes_swipe : R.layout.item_notes_grid_swipe, parent, false));
 //        View view = LayoutInflater.from(parent.getContext()).inflate(isNotesViewAsList ? R.layout.item_notes : R.layout.item_notes_grid, null);
 //        return new SavedNotesViewHolder(view);
     }
@@ -89,6 +91,9 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
     @Override
     public void onBindViewHolder(final NotesListAdapter.SavedNotesViewHolder holder, final int position) {
         if (savedNotesList != null) {
+
+            viewBinderHelper.bind(holder.swipeItem, String.valueOf(position));
+            viewBinderHelper.setOpenOnlyOne(true);
 
             holder.tvNotesTitleItem.setText(savedNotesList.get(position).getNotesTitle());
             holder.tvNotesDesc.setText(savedNotesList.get(position).getNotesDesc());
@@ -131,6 +136,12 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
             holder.tvNotesDesc.setText("No Description");
         }
 
+        if (position == 0) {
+            swipeOnLoad(holder.swipeItem, Prefs.getBoolean(Prefs.IS_SWIPE_FIRST_TIME, false));
+        }
+
+
+
     }
 
     public void changeView(boolean isNotesViewShowing) {
@@ -138,6 +149,27 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         notifyDataSetChanged();
     }
 
+    public void swipeOnLoad(final SwipeRevealLayout swipeItem, boolean isTrue) {
+        if (isTrue) {
+            Handler h = new Handler();
+            Runnable rOpen = new Runnable() {
+                @Override
+                public void run() {
+                    swipeItem.open(true);
+                }
+            };
+            Runnable rClose = new Runnable() {
+                @Override
+                public void run() {
+                    swipeItem.close(true);
+                }
+            };
+            h.postDelayed(rOpen, 1000);
+            h.postDelayed(rClose, 2500);
+            Prefs.putBoolean(Prefs.IS_SWIPE_FIRST_TIME, false);
+        }
+
+    }
 
     @Override
     public int getItemCount() {
@@ -156,16 +188,21 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
     class SavedNotesViewHolder extends RecyclerView.ViewHolder {
         TextView tvNotesTitleItem, tvNotesDesc, tvNotesDate;
-        ImageView ivDelete;
-
+        //        ImageView ivDelete;
+        LinearLayout ivDelete;
+        LinearLayout itemMain;
+        SwipeRevealLayout swipeItem;
 
         public SavedNotesViewHolder(View itemView) {
             super(itemView);
             tvNotesTitleItem = itemView.findViewById(R.id.tv_notes_title_item);
             tvNotesDesc = itemView.findViewById(R.id.tv_notes_desc);
             tvNotesDate = itemView.findViewById(R.id.tv_notes_date);
-            ivDelete = itemView.findViewById(R.id.iv_delete);
-            itemView.setOnClickListener(new View.OnClickListener() {
+//            ivDelete = itemView.findViewById(R.id.iv_delete);
+            ivDelete = itemView.findViewById(R.id.ll_swipe_delete);
+            itemMain = itemView.findViewById(R.id.ll_item_notes);
+            swipeItem = itemView.findViewById(R.id.item_swipe);
+            itemMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     item = getItemDataFromDb(tvNotesTitleItem.getText().toString());
@@ -201,7 +238,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
         DateFormat timeParser = new SimpleDateFormat("dd MMM yyyy hh:mm a");
         @SuppressLint("SimpleDateFormat")
         DateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-        for(NoteItem n : savedNotesList) {
+        for (NoteItem n : savedNotesList) {
             try {
                 Date convertedDate = parser.parse(n.getDate());
                 String notesDate_ddMMyyyy = formatter.format(convertedDate);
@@ -210,7 +247,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
                 Date toTime = timeParser.parse(n.getDate());
                 String todaysTime = timeFormatter.format(toTime);
-                if(notesDate_ddMMyyyy.equals(todaysDate_ddMMyyyy)) {
+                if (notesDate_ddMMyyyy.equals(todaysDate_ddMMyyyy)) {
                     n.setDate(todaysTime);
                 }
             } catch (ParseException e) {

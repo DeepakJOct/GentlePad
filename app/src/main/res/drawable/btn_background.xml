@@ -8,7 +8,7 @@
                 android:width="3dp"
                 android:color="#80FFFFFF" />-->
             <corners
-                android:radius="3.2dp" />
+                android:radius="5dp" />
             <!--<padding
                 android:left="10dp"
                 android:top="10dp"
@@ -26,7 +26,7 @@
                 android:width="3dp"
                 android:color="#80FFFFFF" />-->
             <corners
-                android:radius="3.2dp" />
+                android:radius="5dp" />
             <!--<padding
                 android:left="10dp"
                 android:top="10dp"
