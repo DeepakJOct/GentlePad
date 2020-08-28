@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,12 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
             holder.tvNotesDesc.setText(savedNotesList.get(position).getNotesDesc());
             holder.tvNotesDate.setText(savedNotesList.get(position).getDate());
 
+            int lineCount = holder.tvNotesDesc.getLineCount();
+            float width = holder.tvNotesDesc.getPaint().measureText(holder.tvNotesDesc.getText().toString());
+            Log.d("LineCount-->", lineCount + "");
+            Log.d("TextWidth-->", width + "");
+            holder.tvNotesDesc.setMaxLines(setMaxLineAsPerTextLength(Math.round(width)));
+
             db = new DatabaseHelper(context);
             holder.ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -142,6 +149,27 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
 
 
 
+    }
+
+    /*
+     * If width ranges between 1000 - 3000 = setMaxLines = 3
+     * If width ranges between 3000 - 7000 = setMaxLines = 5
+     * If width >9000 = setMaxLines = 8
+     *
+     * */
+
+    private int setMaxLineAsPerTextLength(int width) {
+        int maxLines = 0;
+        if(width < 3000) {
+            maxLines = 3;
+        } else if (width > 3000 && width < 7000) {
+            maxLines = 5;
+        } else if (width > 7000 && width < 9000) {
+            maxLines = 7;
+        } else {
+            maxLines = 9;
+        }
+        return maxLines;
     }
 
     public void changeView(boolean isNotesViewShowing) {

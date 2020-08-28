@@ -102,7 +102,6 @@
                 android:layout_marginRight="@dimen/_4sdp"
                 android:layout_weight="0.67"
                 android:ellipsize="end"
-                android:maxLines="3"
                 android:padding="@dimen/_2sdp"
                 android:textSize="@dimen/_12sdp"
                 android:text="Gentle pad note making app is the best app"

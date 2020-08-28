@@ -242,7 +242,7 @@ public class NotesListFragment extends Fragment {
     }
 
     public void sortNotesBy(String sortOption) {
-        Toast.makeText(getActivity(), "Sort by: " + sortOption, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Sort by: " + sortOption, Toast.LENGTH_SHORT).show();
         if (sortOption.equalsIgnoreCase(Constants.NONE)) {
 
             //No option

@@ -2,9 +2,11 @@ package com.example.gentlepad.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +37,15 @@ import com.example.gentlepad.fragments.ViewNotesFragment;
 import com.example.gentlepad.listeners.OnResultListener;
 import com.example.gentlepad.models.NoteItem;
 import com.example.gentlepad.views.MovableFloatingActionButton;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     private String fontSize;
     private float selectedFontSize;
     private NotesListFragment notesListFragment;
+    private int REQUEST_APP_UPDATE = 111;
+    private AppUpdateManager appUpdateManager;
+    InstallStateUpdatedListener installStateUpdatedListener;
 
 
     @SuppressLint("RestrictedApi")
@@ -72,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         fabAddNew = findViewById(R.id.fab);
         mTopToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
+        //check for the app update
+        appUpdateCheck();
         if (getDataFromDb() != null) {
             startNewFragment(NotesListFragment.newInstance(), "NotesListFragment", false);
             if (rlNoNotes.getVisibility() == View.VISIBLE) {
@@ -202,6 +218,8 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     @Override
     protected void onResume() {
         super.onResume();
+        //check for the app update
+        appUpdateCheck();
         /*
          * Get font size string from the font selection dialog in settings activity.
          * */
@@ -297,6 +315,68 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         Log.d("ArrayListFromDb--> ", " " + savedNotesList.get(0));
         res.close();
         return savedNotesList;
+    }
+
+    //Manage App Update
+
+    private void appUpdateCheck() {
+        //Listen to update state
+        installStateUpdatedListener = new InstallStateUpdatedListener() {
+            @Override
+            public void onStateUpdate(InstallState state) {
+                if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                    popSnackBarForCompleteUpdate();
+                } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                    if (appUpdateManager != null) {
+                        appUpdateManager.unregisterListener(installStateUpdatedListener);
+                    }
+                } else {
+                    Log.i("MainActivity", "InstallStateUpdatedListener: state: " + state.installStatus());
+                }
+            }
+        };
+
+        //Check for update availability and start if it's available
+        appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+        appUpdateManager.registerListener(installStateUpdatedListener);
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo appUpdateInfo) {
+                if ((appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE)
+                        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                    // Request the update.
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(
+                                appUpdateInfo,
+                                AppUpdateType.IMMEDIATE,
+                                MainActivity.this,
+                                REQUEST_APP_UPDATE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    popSnackBarForCompleteUpdate();
+                } else {
+                    Log.e("MainActivity", "checkForAppUpdateAvailability: something else");
+                }
+            }
+        });
+
+
+    }
+
+    private void popSnackBarForCompleteUpdate() {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.rl_notes), "Update Install Successful", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Install", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(appUpdateManager != null) {
+                    appUpdateManager.completeUpdate();
+                }
+            }
+        });
+        snackbar.setActionTextColor(getResources().getColor(R.color.text_color));
+        snackbar.show();
     }
 
     @Override

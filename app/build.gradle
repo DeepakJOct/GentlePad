@@ -45,5 +45,7 @@ dependencies {
     //swipe reveal layout
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
+    implementation 'com.google.android.play:core:1.6.3'
+
 
 }
