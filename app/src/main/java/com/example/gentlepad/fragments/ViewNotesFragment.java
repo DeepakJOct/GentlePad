@@ -1,6 +1,7 @@
 package com.example.gentlepad.fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -102,6 +103,8 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         btnCancel.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         btnEdit.setOnClickListener(this);
+        etNotesTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        etNotesDesc.setTextColor(getResources().getColor(R.color.desc_black));
 
 //        getActivity().setTitle("View Notes");
 

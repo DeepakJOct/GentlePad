@@ -1,6 +1,7 @@
 package com.example.gentlepad.fragments;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -78,6 +79,8 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         btnCancel.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         databaseHelper = new DatabaseHelper(getContext());
+        etNotesTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        etNotesDesc.setTextColor(getResources().getColor(R.color.desc_black));
 
         if (!TextUtils.isEmpty(etNotesTitle.getText().toString())) {
             nTitle = etNotesTitle.getText().toString();

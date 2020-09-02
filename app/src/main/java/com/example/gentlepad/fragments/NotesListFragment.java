@@ -219,9 +219,7 @@ public class NotesListFragment extends Fragment {
     private void showListOrGrid() {
         if (!isNotesViewAsList) {
             StaggeredGridLayoutManager mGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            /*Collections.reverse(savedNotesList);*/
             rcvNotes.setLayoutManager(mGridLayoutManager);
-//            final GridLayoutAnimationController gridAnimationController = new GridLayoutAnimationController();
             if(isBtnclick) {
                 TransitionManager.beginDelayedTransition(rcvNotes);
             }
@@ -229,8 +227,6 @@ public class NotesListFragment extends Fragment {
             notesListAdapter.notifyDataSetChanged();
         } else {
             LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
-            /*linearLayoutManager.setReverseLayout(true);
-            linearLayoutManager.setStackFromEnd(true);*/
             rcvNotes.setLayoutManager(mLinearLayoutManager);
             if(isBtnclick) {
                 TransitionManager.beginDelayedTransition(rcvNotes);
@@ -242,25 +238,14 @@ public class NotesListFragment extends Fragment {
     }
 
     public void sortNotesBy(String sortOption) {
-//        Toast.makeText(getActivity(), "Sort by: " + sortOption, Toast.LENGTH_SHORT).show();
-        if (sortOption.equalsIgnoreCase(Constants.NONE)) {
-
-            //No option
-
-        } else if (sortOption.equalsIgnoreCase(Constants.ASCENDING)) {
+        if (sortOption.equalsIgnoreCase(Constants.ASCENDING)) {
             if (savedNotesList != null && savedNotesList.size() > 0) {
                 savedNotesList.clear();
                 savedNotesList = getDataFromDbSorted(sortOption);
-
+                showListOrGrid();
                 for (NoteItem n : savedNotesList) {
                     Log.d("Frag--> " + "title--> ", n.getNotesTitle());
                 }
-                /*Collections.sort(savedNotesList, new Comparator<NoteItem>() {
-                    @Override
-                    public int compare(NoteItem noteItem, NoteItem t1) {
-                        return noteItem.getNotesTitle().compareTo(t1.getNotesTitle());
-                    }
-                });*/
             } else {
                 CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
             }
@@ -270,6 +255,7 @@ public class NotesListFragment extends Fragment {
 //                Collections.reverse(savedNotesList);
                 savedNotesList.clear();
                 savedNotesList = getDataFromDbSorted(sortOption);
+                showListOrGrid();
                 for (NoteItem n : savedNotesList) {
                     Log.d("Frag--> " + "title--> ", n.getNotesTitle());
                 }
@@ -281,14 +267,10 @@ public class NotesListFragment extends Fragment {
             if (savedNotesList != null && savedNotesList.size() > 0) {
                 savedNotesList.clear();
                 savedNotesList = getDataFromDbSorted(sortOption);
+                showListOrGrid();
                 for (NoteItem n : savedNotesList) {
                     Log.d("Frag--> " + "title--> ", n.getNotesTitle());
                 }
-                /*Collections.sort(savedNotesList, new Comparator<NoteItem>() {
-                    public int compare(NoteItem o1, NoteItem o2) {
-                        return o2.getDate().compareTo(o1.getDate());
-                    }
-                });*/
             } else {
                 CommonUtils.showToastMessage(getContext(), getString(R.string.could_note_sort_no_notes));
             }
