@@ -1,151 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:overScrollMode="never">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:background="@drawable/btn_background"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp">
+
+                <EditText
+                    android:id="@+id/et_notes_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:hint="@string/enter_title"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:nextFocusDown="@+id/et_notes_desc"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingRight="@dimen/_2sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/_14sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="#f79188" />
+
+                <EditText
+                    android:id="@+id/et_notes_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top|start"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@android:color/transparent"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:gravity="start|left"
+                    android:hint="@string/enter_notes_description"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingRight="@dimen/_2sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/text_color"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/_13sdp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_save_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:weightSum="1">
+
+
+
+        <ImageButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_47sdp"
+            android:layout_marginRight="@dimen/_1sdp"
+            android:layout_weight="0.5"
             android:background="@drawable/btn_background"
-            android:orientation="vertical"
-            android:padding="@dimen/_5sdp">
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
 
-            <EditText
-                android:id="@+id/et_notes_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:cursorVisible="true"
-                android:focusable="true"
-                android:hint="@string/enter_title"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:nextFocusDown="@+id/et_notes_desc"
-                android:paddingLeft="@dimen/_4sdp"
-                android:paddingTop="@dimen/_2sdp"
-                android:paddingRight="@dimen/_2sdp"
-                android:paddingBottom="@dimen/_2sdp"
-                android:textColor="@color/text_color"
-                android:textStyle="bold"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/_14sdp" />
+        <ImageButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_1sdp"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_background"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_tick"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="#f79188" />
-
-            <EditText
-                android:id="@+id/et_notes_desc"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top|start"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@android:color/transparent"
-                android:cursorVisible="true"
-                android:focusable="true"
-                android:gravity="start|left"
-                android:hint="@string/enter_notes_description"
-                android:inputType="textCapSentences|textMultiLine"
-                android:paddingLeft="@dimen/_4sdp"
-                android:paddingTop="@dimen/_2sdp"
-                android:paddingRight="@dimen/_2sdp"
-                android:paddingBottom="@dimen/_2sdp"
-                android:scrollbars="vertical"
-                android:textColor="@color/text_color"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/_13sdp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_save_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:weightSum="1">
+    </LinearLayout>
 
 
+    <LinearLayout
+        android:id="@+id/ll_edit_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:visibility="gone"
+        android:weightSum="1">
 
-            <ImageButton
-                android:id="@+id/btn_cancel"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/_1sdp"
-                android:layout_weight="0.5"
-                android:background="@drawable/btn_background"
-                android:clickable="true"
-                app:srcCompat="@drawable/ic_cancel"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/_1sdp"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_background"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_back"
+            android:textAllCaps="true" />
 
-            <ImageButton
-                android:id="@+id/btn_save"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_1sdp"
-                android:layout_weight="0.5"
-                android:background="@drawable/btn_background"
-                android:clickable="true"
-                app:srcCompat="@drawable/ic_tick"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+        <ImageButton
+            android:id="@+id/btn_edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_1sdp"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_background"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_edit"
+            android:textAllCaps="true" />
 
-        </LinearLayout>
+    </LinearLayout>
 
+</RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_edit_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:visibility="gone"
-            android:weightSum="1">
-
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/_1sdp"
-                android:layout_weight="0.5"
-                android:background="@drawable/btn_background"
-                android:clickable="true"
-                app:srcCompat="@drawable/ic_back"
-                android:textAllCaps="true" />
-
-            <ImageButton
-                android:id="@+id/btn_edit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_1sdp"
-                android:layout_weight="0.5"
-                android:background="@drawable/btn_background"
-                android:clickable="true"
-                app:srcCompat="@drawable/ic_edit"
-                android:textAllCaps="true" />
-
-        </LinearLayout>
-    </RelativeLayout>
-</ScrollView>

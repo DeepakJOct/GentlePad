@@ -59,6 +59,8 @@
                 android:layout_weight="0.8"
                 android:padding="@dimen/_2sdp"
                 android:text="@string/notes_title"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
                 android:textSize="@dimen/_12sdp" />

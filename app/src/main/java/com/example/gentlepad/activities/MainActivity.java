@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,12 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.Utilities.Constants;
 import com.example.gentlepad.Utilities.Prefs;
-import com.example.gentlepad.adapters.NotesListAdapter;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
 import com.example.gentlepad.dialogs.HelpDialogFragment;
@@ -49,6 +46,10 @@ import com.google.android.play.core.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import smartdevelop.ir.eram.showcaseviewlib.GuideView;
+import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
+import smartdevelop.ir.eram.showcaseviewlib.listener.GuideListener;
 
 public class MainActivity extends AppCompatActivity implements AddNewNoteFragment.OnFragmentInteractionListener,
         NotesListFragment.OnNotesListFragmentInteractionListener,
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
             case R.id.help:
                 new HelpDialogFragment().show(getSupportFragmentManager(), "HelpDialogFragment");
                 break;
-            case R.id.menu_settings:
+            case R.id.sort_by:
                 new SortByDialogFragment(new OnResultListener() {
                     @Override
                     public void getResult(Object object, boolean isSuccess) {
@@ -218,6 +219,12 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
     @Override
     protected void onResume() {
         super.onResume();
+        //Show the tutorials on first open
+        if(!Prefs.getBoolean(Prefs.IS_TUTORIAL_SHOWN, false)) {
+            ShowIntro("Add Notes","Tap here to start writing your notes.", R.id.fab, 1);
+        }
+
+
         //check for the app update
         appUpdateCheck();
         /*
@@ -363,6 +370,36 @@ public class MainActivity extends AppCompatActivity implements AddNewNoteFragmen
         });
 
 
+    }
+
+    private void ShowIntro(String title, String text, int viewId, final int type) {
+
+        new GuideView.Builder(this)
+                .setTitle(title)
+                .setContentText(text)
+                .setTargetView(findViewById(viewId))
+                .setContentTextSize(12)//optional
+                .setTitleTextSize(14)//optional
+                .setDismissType(DismissType.anywhere) //optional - default dismissible by TargetView
+                .setGuideListener(new GuideListener() {
+                    @Override
+                    public void onDismiss(View view) {
+                        if (type == 1) {
+                            ShowIntro("Sort", "Tap here to arrange the list", R.id.sort_by, 6);
+                        } else if (type == 6) {
+                            ShowIntro("List/Grid", "Tap to change view from list or grid", R.id.view_change, 3);
+                        } /*else if (type == 3) {
+                            ShowIntro("Menu", "Click on menu for help & support", R.menu.menu, 4);
+                        }*/ /*else if (type == 3) {
+                            ShowIntro("Overlay", "Add your selected overlay effect on your video ", R.id.button_tool_overlay, 5);
+                        } else if (type == 5) {
+                            SharePrefUtils.putBoolean("showcase", false);
+                        }*/
+                    }
+                })
+                .build()
+                .show();
+        Prefs.putBoolean(Prefs.IS_TUTORIAL_SHOWN, true);
     }
 
     private void popSnackBarForCompleteUpdate() {

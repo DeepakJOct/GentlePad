@@ -15,17 +15,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.common.CommonUtils;
 import com.example.gentlepad.database.DatabaseHelper;
-import com.example.gentlepad.dialogs.HelpDialogFragment;
 import com.example.gentlepad.models.NoteItem;
-
-import java.security.Key;
 
 
 /**
@@ -108,13 +104,15 @@ public class AddNewNoteFragment extends Fragment implements View.OnClickListener
         });
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu, menu);
         if (menu != null) {
             menu.findItem(R.id.view_change).setVisible(false);
-            menu.findItem(R.id.menu_settings).setVisible(false);
+            menu.findItem(R.id.sort_by).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

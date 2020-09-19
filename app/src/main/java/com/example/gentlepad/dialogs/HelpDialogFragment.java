@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.gentlepad.R;
 import com.example.gentlepad.listeners.OnResultListener;
+import com.example.gentlepad.views.AutofitTextView;
 
 import java.util.ArrayList;
 
@@ -46,22 +47,22 @@ public class HelpDialogFragment extends DialogFragment implements View.OnClickLi
     @BindView(R.id.iv_done)
     ImageView ivDone;
     @BindView(R.id.tv_info)
-    TextView tvInfo;
+    AutofitTextView tvInfo;
 
     @BindView(R.id.tv_help_1)
-    TextView tvHelp1;
+    AutofitTextView tvHelp1;
     @BindView(R.id.tv_help_2)
-    TextView tvHelp2;
+    AutofitTextView tvHelp2;
     @BindView(R.id.tv_help_3)
-    TextView tvHelp3;
+    AutofitTextView tvHelp3;
     @BindView(R.id.tv_help_4)
-    TextView tvHelp4;
+    AutofitTextView tvHelp4;
     @BindView(R.id.tv_help_5)
-    TextView tvHelp5;
+    AutofitTextView tvHelp5;
     @BindView(R.id.tv_help_6)
-    TextView tvHelp6;
+    AutofitTextView tvHelp6;
     @BindView(R.id.tv_help_7)
-    TextView tvHelp7;
+    AutofitTextView tvHelp7;
 //    @BindView(R.id.tv_font_large)
 //    TextView tvFontLarge;
 
@@ -100,7 +101,7 @@ public class HelpDialogFragment extends DialogFragment implements View.OnClickLi
         s1.setSpan(new BulletSpan(15), 0, t1.length(), 0);
         tvHelp1.setText(TextUtils.concat(s1));
 
-        CharSequence t2 = "To view notes click on the notes in the list.";
+        CharSequence t2 = "Tap on notes to view/edit.";
         SpannableString s2 = new SpannableString(t2);
         s2.setSpan(new BulletSpan(15), 0, t2.length(), 0);
         tvHelp2.setText(TextUtils.concat(s2));
@@ -123,7 +124,7 @@ public class HelpDialogFragment extends DialogFragment implements View.OnClickLi
         spannableString1.setSpan(new BulletSpan(15), 0, spannableString1.length(), 0);
         tvHelp4.setText(spannableString1);
 
-        CharSequence t5 = "Use menu to view your notes in List or Grid.";
+        CharSequence t5 = "Use menu to view notes in List/Grid.";
         SpannableString s5 = new SpannableString(t5);
         s5.setSpan(new BulletSpan(15), 0, t5.length(), 0);
         tvHelp5.setText(TextUtils.concat(s5));

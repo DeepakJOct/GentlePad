@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import com.example.gentlepad.R;
@@ -23,6 +25,9 @@ import butterknife.ButterKnife;
  */
 @SuppressLint("ValidFragment")
 public class SupportDialogFragment extends DialogFragment implements View.OnClickListener {
+
+    @BindView(R.id.tv_visit_web)
+    TextView tvVisitweb;
 
     public SupportDialogFragment() {
 
@@ -44,6 +49,8 @@ public class SupportDialogFragment extends DialogFragment implements View.OnClic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        tvVisitweb.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 

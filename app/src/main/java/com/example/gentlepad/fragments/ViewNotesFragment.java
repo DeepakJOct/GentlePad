@@ -162,7 +162,7 @@ public class ViewNotesFragment extends Fragment implements View.OnClickListener 
         inflater.inflate(R.menu.menu, menu);
         if (menu != null) {
             menu.findItem(R.id.view_change).setVisible(false);
-            menu.findItem(R.id.menu_settings).setVisible(false);
+            menu.findItem(R.id.sort_by).setVisible(false);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

@@ -20,6 +20,7 @@ public class Prefs {
 
 
     public static final String IS_SWIPE_FIRST_TIME = "isSwipeFirstTime";
+    public static final String IS_TUTORIAL_SHOWN = "is_tutorial_shown";
     /**
      * Initialize the Prefs helper class to keep a reference to the
      * SharedPreference for this application the SharedPreference will use the
