@@ -75,7 +75,7 @@
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:singleLine="false"
-        android:text=""
+        android:text="To view notes click on the notes in the list."
         android:textColor="@color/grey"
         android:textSize="@dimen/_12sdp"/>
 

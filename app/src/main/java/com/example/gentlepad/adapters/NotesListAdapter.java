@@ -99,6 +99,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Save
             holder.tvNotesTitleItem.setText(savedNotesList.get(position).getNotesTitle());
             holder.tvNotesDesc.setText(savedNotesList.get(position).getNotesDesc());
             holder.tvNotesDate.setText(savedNotesList.get(position).getDate());
+            holder.tvNotesDate.setTextColor(context.getResources().getColor(R.color.date_color_rock));  //date_color_broe
             holder.tvNotesDesc.setTextColor(context.getResources().getColor(R.color.desc_black));
 
             int lineCount = holder.tvNotesDesc.getLineCount();

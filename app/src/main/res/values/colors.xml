@@ -17,7 +17,11 @@
     <color name="title_blue">#4286f4</color>
     <color name="title_blue_1">#0077cb</color>
     <color name="desc_black">#140e09</color>
-    <color name="date_color">#AA764F</color>
+
+    <color name="date_color_dark_glow">#FFECBB</color>
+
+    <color name="date_color_brown">#D1B18F</color>
+    <color name="date_color_rock">#B8A49E</color>
 
     <!--<color name="background_light_red">#ff8e851A</color>-->
     <color name="background_light_red">#ff6659</color>
