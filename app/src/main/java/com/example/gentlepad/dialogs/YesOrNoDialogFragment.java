@@ -1,4 +1,4 @@
-package com.example.gentlepad.dialogs;
+package com.originprogrammers.gentlepad.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.listeners.DeleteItemListener;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.listeners.DeleteItemListener;
 
 public class YesOrNoDialogFragment extends DialogFragment {
     private DeleteItemListener deleteItemListener;

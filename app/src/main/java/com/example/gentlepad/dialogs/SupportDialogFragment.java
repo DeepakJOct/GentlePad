@@ -1,4 +1,4 @@
-package com.example.gentlepad.dialogs;
+package com.originprogrammers.gentlepad.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.example.gentlepad.R;
+import com.originprogrammers.gentlepad.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

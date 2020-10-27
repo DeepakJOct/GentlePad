@@ -1,4 +1,4 @@
-package com.example.gentlepad.splash;
+package com.originprogrammers.gentlepad.splash;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.gentlepad.activities.MainActivity;
-import com.example.gentlepad.R;
-import com.example.gentlepad.common.CommonUtils;
+import com.originprogrammers.gentlepad.activities.MainActivity;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.common.CommonUtils;
 
 public class SplashActivity extends AppCompatActivity {
 

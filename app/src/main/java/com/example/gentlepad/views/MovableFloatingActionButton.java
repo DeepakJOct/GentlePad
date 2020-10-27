@@ -1,4 +1,4 @@
-package com.example.gentlepad.views;
+package com.originprogrammers.gentlepad.views;
 
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;

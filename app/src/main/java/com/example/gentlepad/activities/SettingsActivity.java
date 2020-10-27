@@ -1,24 +1,20 @@
-package com.example.gentlepad.activities;
+package com.originprogrammers.gentlepad.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.Utilities.Constants;
-import com.example.gentlepad.Utilities.Prefs;
-import com.example.gentlepad.common.CommonUtils;
-import com.example.gentlepad.dialogs.FontSettingDialogFragment;
-import com.example.gentlepad.dialogs.SortByDialogFragment;
-import com.example.gentlepad.listeners.OnResultListener;
-
-import java.util.logging.Logger;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.Utilities.Constants;
+import com.originprogrammers.gentlepad.Utilities.Prefs;
+import com.originprogrammers.gentlepad.common.CommonUtils;
+import com.originprogrammers.gentlepad.dialogs.FontSettingDialogFragment;
+import com.originprogrammers.gentlepad.dialogs.SortByDialogFragment;
+import com.originprogrammers.gentlepad.listeners.OnResultListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

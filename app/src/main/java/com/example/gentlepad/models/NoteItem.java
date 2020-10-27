@@ -1,4 +1,4 @@
-package com.example.gentlepad.models;
+package com.originprogrammers.gentlepad.models;
 
 public class NoteItem {
 

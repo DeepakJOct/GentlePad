@@ -1,4 +1,4 @@
-package com.example.gentlepad.views;
+package com.originprogrammers.gentlepad.views;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -18,7 +18,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.gentlepad.R;
+import com.originprogrammers.gentlepad.R;
 
 import java.util.ArrayList;
 

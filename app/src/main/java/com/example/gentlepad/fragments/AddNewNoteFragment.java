@@ -1,4 +1,4 @@
-package com.example.gentlepad.fragments;
+package com.originprogrammers.gentlepad.fragments;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -18,10 +18,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.common.CommonUtils;
-import com.example.gentlepad.database.DatabaseHelper;
-import com.example.gentlepad.models.NoteItem;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.common.CommonUtils;
+import com.originprogrammers.gentlepad.database.DatabaseHelper;
+import com.originprogrammers.gentlepad.models.NoteItem;
 
 
 /**

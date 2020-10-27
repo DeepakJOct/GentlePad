@@ -1,4 +1,4 @@
-package com.example.gentlepad.adapters;
+package com.originprogrammers.gentlepad.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,15 +18,15 @@ import android.widget.TextView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
-import com.example.gentlepad.R;
-import com.example.gentlepad.Utilities.Prefs;
-import com.example.gentlepad.common.CommonUtils;
-import com.example.gentlepad.database.DatabaseHelper;
-import com.example.gentlepad.dialogs.YesOrNoDialogFragment;
-import com.example.gentlepad.fragments.ViewNotesFragment;
-import com.example.gentlepad.listeners.DeleteItemListener;
-import com.example.gentlepad.listeners.OnResultListener;
-import com.example.gentlepad.models.NoteItem;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.Utilities.Prefs;
+import com.originprogrammers.gentlepad.common.CommonUtils;
+import com.originprogrammers.gentlepad.database.DatabaseHelper;
+import com.originprogrammers.gentlepad.dialogs.YesOrNoDialogFragment;
+import com.originprogrammers.gentlepad.fragments.ViewNotesFragment;
+import com.originprogrammers.gentlepad.listeners.DeleteItemListener;
+import com.originprogrammers.gentlepad.listeners.OnResultListener;
+import com.originprogrammers.gentlepad.models.NoteItem;
 
 import java.text.DateFormat;
 import java.text.ParseException;

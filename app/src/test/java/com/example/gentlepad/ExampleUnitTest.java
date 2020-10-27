@@ -1,4 +1,4 @@
-package com.example.gentlepad;
+package com.originprogrammers.gentlepad;
 
 import org.junit.Test;
 

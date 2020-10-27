@@ -1,4 +1,4 @@
-package com.example.gentlepad.database;
+package com.originprogrammers.gentlepad.database;
 
 public class SharedPrefs {
 }

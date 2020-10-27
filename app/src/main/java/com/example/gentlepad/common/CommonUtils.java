@@ -1,4 +1,4 @@
-package com.example.gentlepad.common;
+package com.originprogrammers.gentlepad.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;

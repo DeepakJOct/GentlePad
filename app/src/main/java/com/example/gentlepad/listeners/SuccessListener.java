@@ -1,4 +1,4 @@
-package com.example.gentlepad.listeners;
+package com.originprogrammers.gentlepad.listeners;
 
 public interface SuccessListener {
     void OnSuccess();

@@ -1,4 +1,4 @@
-package com.example.gentlepad.fragments;
+package com.originprogrammers.gentlepad.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,32 +22,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.GridLayoutAnimationController;
-import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.Utilities.Constants;
-import com.example.gentlepad.Utilities.Prefs;
-import com.example.gentlepad.adapters.NotesListAdapter;
-import com.example.gentlepad.common.CommonUtils;
-import com.example.gentlepad.database.DatabaseHelper;
-import com.example.gentlepad.dialogs.HelpDialogFragment;
-import com.example.gentlepad.dialogs.SortByDialogFragment;
-import com.example.gentlepad.listeners.OnResultListener;
-import com.example.gentlepad.models.NoteItem;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.Utilities.Constants;
+import com.originprogrammers.gentlepad.Utilities.Prefs;
+import com.originprogrammers.gentlepad.adapters.NotesListAdapter;
+import com.originprogrammers.gentlepad.common.CommonUtils;
+import com.originprogrammers.gentlepad.database.DatabaseHelper;
+import com.originprogrammers.gentlepad.listeners.OnResultListener;
+import com.originprogrammers.gentlepad.models.NoteItem;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.

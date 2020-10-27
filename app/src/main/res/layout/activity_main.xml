@@ -66,7 +66,7 @@
             android:layout_gravity="center"/>
 
 
-        <com.example.gentlepad.views.MovableFloatingActionButton
+        <com.originprogrammers.gentlepad.views.MovableFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

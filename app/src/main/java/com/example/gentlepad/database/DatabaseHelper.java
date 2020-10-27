@@ -1,20 +1,14 @@
-package com.example.gentlepad.database;
+package com.originprogrammers.gentlepad.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.gentlepad.Utilities.Constants;
-import com.example.gentlepad.common.CommonUtils;
-import com.example.gentlepad.models.NoteItem;
-
-import java.util.logging.Logger;
-
-import static android.icu.text.MessagePattern.ArgType.SELECT;
+import com.originprogrammers.gentlepad.Utilities.Constants;
+import com.originprogrammers.gentlepad.common.CommonUtils;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 

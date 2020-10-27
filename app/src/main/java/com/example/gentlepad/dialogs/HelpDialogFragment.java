@@ -1,9 +1,8 @@
-package com.example.gentlepad.dialogs;
+package com.originprogrammers.gentlepad.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,15 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.listeners.OnResultListener;
-import com.example.gentlepad.views.AutofitTextView;
-
-import java.util.ArrayList;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.views.AutofitTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

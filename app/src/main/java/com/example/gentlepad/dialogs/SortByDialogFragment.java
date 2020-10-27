@@ -1,4 +1,4 @@
-package com.example.gentlepad.dialogs;
+package com.originprogrammers.gentlepad.dialogs;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.listeners.OnResultListener;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.listeners.OnResultListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

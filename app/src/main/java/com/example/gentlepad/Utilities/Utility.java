@@ -1,4 +1,4 @@
-package com.example.gentlepad.Utilities;
+package com.originprogrammers.gentlepad.Utilities;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

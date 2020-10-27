@@ -1,4 +1,4 @@
-package com.example.gentlepad.dialogs;
+package com.originprogrammers.gentlepad.dialogs;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,16 +8,15 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.gentlepad.R;
-import com.example.gentlepad.Utilities.Constants;
-import com.example.gentlepad.common.CommonUtils;
-import com.example.gentlepad.listeners.OnResultListener;
+import com.originprogrammers.gentlepad.R;
+import com.originprogrammers.gentlepad.Utilities.Constants;
+import com.originprogrammers.gentlepad.common.CommonUtils;
+import com.originprogrammers.gentlepad.listeners.OnResultListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

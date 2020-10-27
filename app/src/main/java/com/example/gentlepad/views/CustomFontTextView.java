@@ -1,11 +1,11 @@
-package com.example.gentlepad.views;
+package com.originprogrammers.gentlepad.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import com.example.gentlepad.R;
+import com.originprogrammers.gentlepad.R;
 
 
 /**
